@@ -4,6 +4,7 @@ import QtMultimedia 5.0
 
 import Motion.View 1.0
 
+
 ApplicationWindow {
     title: qsTr("Hello World")
 //    width: 640
@@ -11,21 +12,14 @@ ApplicationWindow {
     width:640
     height:480
 
+
+
     CameraView{
         id: view
         name : "qhwer"
         anchors.fill: parent
         onNameChanged: {
-            console.log("NameChanged!");
             update()
-        }
-
-        MouseArea{
-            anchors.fill: parent;
-            onClicked: {
-                console.log(view.name)
-                view.name = "qwer"
-            }
         }
     }
 

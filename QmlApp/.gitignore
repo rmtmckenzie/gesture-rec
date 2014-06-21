@@ -1,2 +1,3 @@
 #ignore user configuration files from QtCreator.
 *.pro.user
+*.autosave

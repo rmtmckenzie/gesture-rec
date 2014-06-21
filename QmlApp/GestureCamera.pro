@@ -12,12 +12,20 @@ QT += multimedia
 SOURCES += main.cpp \
     cameraview.cpp \
     camerasource.cpp \
-    videosurface.cpp
+    videosurface.cpp \
+    handrecapi.cpp \
+    Processing/opencvcamerasource.cpp \
+    Processing/handrecprivate.cpp \
+    Processing/filter.cpp \
+    Processing/parser.cpp \
+    Processing/recognizer.cpp \
+    Processing/opencvvideobuffer.cpp
 
 LIBS += \
     -lopencv_core \
     -lopencv_imgproc \
     -lopencv_video \
+    -lopencv_highgui \
 
 # Installation path
 # target.path =
@@ -29,4 +37,11 @@ qtcAddDeployment()
 HEADERS += \
     cameraview.hpp \
     camerasource.hpp \
-    videosurface.hpp
+    videosurface.hpp \
+    handrecapi.hpp \
+    Processing/opencvcamerasource.hpp \
+    Processing/handrecprivate.hpp \
+    Processing/filter.hpp \
+    Processing/parser.hpp \
+    Processing/recognizer.hpp \
+    Processing/opencvvideobuffer.hpp

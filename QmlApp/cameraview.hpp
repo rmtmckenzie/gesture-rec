@@ -7,6 +7,8 @@
 #include "camerasource.hpp"
 #include "videosurface.hpp"
 
+#include "handrecapi.hpp"
+
 class CameraView : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -29,6 +31,9 @@ private:
     QString m_name;
     VideoSurface surface;
     CameraSource source;
+
+    HandRecAPI handrec;
+
     QVideoFrame curframe;
     QImage::Format m_format;
 signals:

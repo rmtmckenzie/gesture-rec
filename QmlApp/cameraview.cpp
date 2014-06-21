@@ -14,10 +14,16 @@ CameraView::CameraView(QQuickItem *parent) :
     source(&surface,this),
     m_format(QImage::Format_Invalid)
 {
-    connect(&surface,&VideoSurface::frameReceived,this,&CameraView::receiveFrame);
-    connect(&surface,&VideoSurface::surfaceFormatChanged,this,&CameraView::updateFormat);
-    source.start();
+//    source.init();
+//    connect(&surface,&VideoSurface::frameReceived,this,&CameraView::receiveFrame);
+//    connect(&surface,&VideoSurface::surfaceFormatChanged,this,&CameraView::updateFormat);
+//    source.start();
 
+    connect(&handrec,&HandRecAPI::frameUpdate,this,&CameraView::receiveFrame);
+//    m_format = QVideoFrame::imageFormatFromPixelFormat(handrec.format());
+    m_format = QImage::Format_RGB888;
+    qDebug() << "Image Format:" << m_format;
+    qDebug() << "Frame Format:" << handrec.format();
 }
 
 QString CameraView::name() const
@@ -33,6 +39,7 @@ void CameraView::setName(QString name)
 
 void CameraView::receiveFrame(QVideoFrame frame)
 {
+    qDebug() << "CameraView received frame!";
     curframe = frame;
     update();
 }
@@ -46,6 +53,8 @@ void CameraView::updateFormat(const QVideoSurfaceFormat &format)
 void CameraView::paint(QPainter *painter)
 {
     //TODO: replace this with QSG/OpenGL
+
+    qDebug() << "Repaint...";
 
     if(m_format != QImage::Format_Invalid){
         curframe.map(QAbstractVideoBuffer::ReadOnly);

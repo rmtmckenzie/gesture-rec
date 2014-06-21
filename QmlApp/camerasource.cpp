@@ -3,12 +3,20 @@
 
 CameraSource::CameraSource(VideoSurface *surf, QObject *parent) :
     QObject(parent),
-    camera(0)
+    camera(0),
+    status(CameraSource::STATUS_UNINITIALIZED),
+    surface(surf)
 {
-    //find the camera
-    QByteArray camloc = findCamera();
+}
 
-    setCamera(camloc);
+void CameraSource::init(QByteArray cam){
+    if(cam.isEmpty()){
+        //find the camera
+        cam = findCamera();
+
+    }
+
+    setCamera(cam);
 
     //Capture Still Supported
     qDebug("Capture Viewfinder %ssupported",(camera->isCaptureModeSupported(QCamera::CaptureViewfinder) ? "" : "not "));
@@ -21,7 +29,7 @@ CameraSource::CameraSource(VideoSurface *surf, QObject *parent) :
         qFatal("Video capture not supported by webcam.");
     }
 
-    camera->setViewfinder(surf);
+    camera->setViewfinder(surface);
 }
 
 CameraSource::~CameraSource()
@@ -34,11 +42,19 @@ CameraSource::~CameraSource()
 
 void CameraSource::start()
 {
+    if(!camera)return;
+
     camera->start();
 
     if(camera->state() != QCamera::ActiveState){
         qDebug() << "Camera not started?";
     }
+}
+
+void CameraSource::stop()
+{
+    camera->stop();
+    setStatus(CameraSource::STATUS_READY);
 }
 
 void CameraSource::setCamera(QByteArray camLocation){
@@ -53,9 +69,26 @@ void CameraSource::setCamera(QByteArray camLocation){
     processing = camera->imageProcessing();
     focus = camera->focus();
     exposure = camera->exposure();
+
+    setStatus(CameraSource::STATUS_READY);
 }
 
-QByteArray CameraSource::findCamera(){
+void CameraSource::setFocus(QCameraFocus::FocusMode f)
+{
+    if(focus && focus->isAvailable()){
+        focus->setFocusMode(f);
+    }
+}
+
+void CameraSource::setExposureComp(qreal ec)
+{
+    if(exposure && exposure->isAvailable()){
+
+    }
+}
+
+QByteArray CameraSource::findCamera()
+{
     QByteArray cam;
     QList<QByteArray> devs = QCamera::availableDevices();
 
