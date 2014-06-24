@@ -6,7 +6,7 @@
 
 #include <QVideoFrame>
 
-#define OPENCV_PIXEL_FORMAT QVideoFrame::Format_BGR24
+#define OPENCV_PIXEL_FORMAT QVideoFrame::Format_RGB24
 
 class HandRecPrivate : public QObject
 {
@@ -16,14 +16,18 @@ public:
 
     void run();
 
+    void stop();
+
 private:
     OpenCVCameraSource cam;
+    bool keepRunning;
+
 signals:
-
     void updateFrame(QVideoFrame f);
+    void _stop();
 
-public slots:
-
+private slots:
+    void quit(){keepRunning = false;}
 };
 
 #endif // HANDRECPRIVATE_HPP

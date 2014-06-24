@@ -39,7 +39,6 @@ void CameraView::setName(QString name)
 
 void CameraView::receiveFrame(QVideoFrame frame)
 {
-    qDebug() << "CameraView received frame!";
     curframe = frame;
     update();
 }
@@ -54,7 +53,7 @@ void CameraView::paint(QPainter *painter)
 {
     //TODO: replace this with QSG/OpenGL
 
-    qDebug() << "Repaint...";
+//    qDebug() << "Repaint...";
 
     if(m_format != QImage::Format_Invalid){
         curframe.map(QAbstractVideoBuffer::ReadOnly);

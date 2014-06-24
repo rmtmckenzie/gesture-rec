@@ -1,10 +1,11 @@
 #include "qtquick2controlsapplicationviewer.h"
 #include <QtQml>
 #include "cameraview.hpp"
-
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "Starting.";
     Application app(argc, argv);
 
     QtQuick2ControlsApplicationViewer viewer;

@@ -21,11 +21,41 @@ SOURCES += main.cpp \
     Processing/recognizer.cpp \
     Processing/opencvvideobuffer.cpp
 
-LIBS += \
-    -lopencv_core \
-    -lopencv_imgproc \
-    -lopencv_video \
-    -lopencv_highgui \
+win32 | win64 {
+
+    #For this to work on windows, must define OPENCV_DIR.
+    #This can be done for each project in Projects tab, by
+    #simply adding the variable, or system wide by searching
+    #for system environment variables.
+
+    #In addition to this, the bin folder should also be added
+    #to the system's path, e.g. %PATH%;%OPENCV_DIR%\bin
+    #For my system, OPENCV_DIR=C:\OpenCV\opencv\build\x86\vc11
+    #(vc11 = Visual Studio 2012, vc12 = Visual Studio 2013...)
+    INCLUDEPATH += $$(OPENCV_DIR)/../../include/
+    LIBS += -L$$(OPENCV_DIR)/lib \
+
+    LIBS += \
+        -lopencv_core249d \
+        -lopencv_imgproc249d \
+        -lopencv_highgui249d \
+
+} else {
+
+    LIBS += \
+        -lopencv_core \
+        -lopencv_imgproc \
+        -lopencv_video \
+        -lopencv_highgui \
+
+}
+
+#echo.target = ec
+#echo.commands = echo $$(OPENCV_DIR)
+#echo.CONFIG = target_predeps
+#QMAKE_EXTRA_TARGETS += echo
+#PRE_TARGETDEPS += ec
+
 
 # Installation path
 # target.path =

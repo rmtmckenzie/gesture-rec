@@ -13,8 +13,6 @@ public:
     void unmap();
     MapMode mapMode() const;
 
-    OpenCVVideoBuffer& operator =(const OpenCVVideoBuffer&b);
-
 private:
     cv::Mat data;
     MapMode _mapmode;

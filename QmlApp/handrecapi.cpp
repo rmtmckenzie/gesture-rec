@@ -17,7 +17,10 @@ HandRecAPI::HandRecAPI(QObject *parent) :
 
 HandRecAPI::~HandRecAPI()
 {
-    runnerThread.exit();
+    handrec->stop();
+    runnerThread.quit();
+    runnerThread.wait();
+
 }
 
 QVideoFrame::PixelFormat HandRecAPI::format()
@@ -27,6 +30,5 @@ QVideoFrame::PixelFormat HandRecAPI::format()
 
 void HandRecAPI::receiveFrame(QVideoFrame frame)
 {
-    qDebug() << "Public API Received Frame!";
     emit frameUpdate(frame);
 }

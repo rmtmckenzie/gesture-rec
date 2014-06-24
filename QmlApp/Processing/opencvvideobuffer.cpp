@@ -9,6 +9,9 @@ OpenCVVideoBuffer::OpenCVVideoBuffer(cv::Mat matdata) :
 
 uchar *OpenCVVideoBuffer::map(QAbstractVideoBuffer::MapMode mode, int *numBytes, int *bytesPerLine)
 {
+    Q_UNUSED(numBytes)
+    Q_UNUSED(bytesPerLine)
+
     if(mode){
         _mapmode = mode;
     }
@@ -27,8 +30,3 @@ QAbstractVideoBuffer::MapMode OpenCVVideoBuffer::mapMode() const
     return _mapmode;
 }
 
-OpenCVVideoBuffer &OpenCVVideoBuffer::OpenCVVideoBuffer::operator =(const OpenCVVideoBuffer &b)
-{
-    this->data = b.data;
-    this->_mapmode = b.mapMode();
-}
