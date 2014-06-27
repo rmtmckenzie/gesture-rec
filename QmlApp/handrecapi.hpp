@@ -2,7 +2,7 @@
 #define HANDRECAPI_HPP
 
 #include <QObject>
-#include "Processing/handrecprivate.hpp"
+#include "Processing/handrecthread.hpp"
 #include <QThread>
 
 class HandRecAPI : public QObject
@@ -14,13 +14,16 @@ public:
 
     QVideoFrame::PixelFormat format();
 
+    bool init(int camnum);
+
 signals:
     void frameUpdate(QVideoFrame frame);
 
 private:
     QThread runnerThread;
-    HandRecPrivate* handrec;
+    HandRecThread* handrec;
 
+    bool isInitialized;
 
 public slots:
     void receiveFrame(QVideoFrame frame);

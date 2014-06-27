@@ -43,7 +43,6 @@ private:
     QCameraFocus* focus;
     VideoSurface* surface;
 
-
     void setCamera(QByteArray camLocation);
     QByteArray findCamera();
 signals:

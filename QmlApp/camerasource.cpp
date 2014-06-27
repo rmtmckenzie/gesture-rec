@@ -3,8 +3,8 @@
 
 CameraSource::CameraSource(VideoSurface *surf, QObject *parent) :
     QObject(parent),
-    camera(0),
     status(CameraSource::STATUS_UNINITIALIZED),
+    camera(0),
     surface(surf)
 {
 }
@@ -82,8 +82,8 @@ void CameraSource::setFocus(QCameraFocus::FocusMode f)
 
 void CameraSource::setExposureComp(qreal ec)
 {
+    Q_UNUSED(ec);
     if(exposure && exposure->isAvailable()){
-
     }
 }
 

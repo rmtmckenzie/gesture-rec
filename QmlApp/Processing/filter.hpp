@@ -3,11 +3,16 @@
 
 #include <QObject>
 
+#include <opencv2/video/video.hpp>
+
 class Filter : public QObject
 {
     Q_OBJECT
 public:
     explicit Filter(QObject *parent = 0);
+
+    cv::Mat filter(const cv::Mat inmat);
+
 
 signals:
 
