@@ -15,11 +15,13 @@ SOURCES += main.cpp \
     videosurface.cpp \
     handrecapi.cpp \
     Processing/opencvcamerasource.cpp \
-    Processing/handrecprivate.cpp \
     Processing/filter.cpp \
     Processing/parser.cpp \
     Processing/recognizer.cpp \
-    Processing/opencvvideobuffer.cpp
+    Processing/opencvvideobuffer.cpp \
+    Processing/camerasettings.cpp \
+    Processing/handrecthread.cpp \
+    Processing/handrecprivate.cpp
 
 win32 | win64 {
 
@@ -70,8 +72,10 @@ HEADERS += \
     videosurface.hpp \
     handrecapi.hpp \
     Processing/opencvcamerasource.hpp \
-    Processing/handrecprivate.hpp \
     Processing/filter.hpp \
     Processing/parser.hpp \
     Processing/recognizer.hpp \
-    Processing/opencvvideobuffer.hpp
+    Processing/opencvvideobuffer.hpp \
+    Processing/camerasettings.hpp \
+    Processing/handrecthread.hpp \
+    Processing/handrecprivate.h

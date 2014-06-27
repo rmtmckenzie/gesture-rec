@@ -18,17 +18,27 @@ public:
     explicit CameraView(QQuickItem *parent = 0);
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(bool playing READ playing WRITE setPlaying NOTIFY playingChanged)
+
+//    Q_INVOKABLE QColor getColor(QPoint pos);
 
     QString name() const;
-    void setName(QString name);
+    void setName(QString n);
+
+    bool playing() const;
+    void setPlaying(bool p);
 
     void paint(QPainter *painter) Q_DECL_OVERRIDE;
+
 signals:
     void nameChanged(QString name);
+    void playingChanged(bool playing);
 
-//    QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
 private:
+//    QSGNode* updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+    bool m_playing;
     QString m_name;
+
     VideoSurface surface;
     CameraSource source;
 

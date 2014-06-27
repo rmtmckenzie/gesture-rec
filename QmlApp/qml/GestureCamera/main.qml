@@ -6,11 +6,11 @@ import Motion.View 1.0
 
 
 ApplicationWindow {
-    title: qsTr("Hello World")
-//    width: 640
-//    height: 480
-    width:640
-    height:480
+    title: qsTr("Camera Capture")
+    width: 640
+    height: 480
+//    width:320
+//    height:240
 
 
 
@@ -21,6 +21,20 @@ ApplicationWindow {
         onNameChanged: {
             update()
         }
+
+//        MouseArea{
+//            anchors.fill: parent
+//            onClicked: {
+//                view.playing = !view.playing;
+//            }
+//        }
+    }
+
+    Item{
+        id:inputhandler
+        focus:true
+        Keys.onSpacePressed: view.playing = !view.playing;
+        Keys.onDigit0Pressed: ;
     }
 
 //    VideoOutput{

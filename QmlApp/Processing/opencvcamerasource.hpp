@@ -14,7 +14,13 @@ public:
 
     cv::Mat update();
 
+    void switchCamera(int num);
+
+    bool isReady();
+
+    void set(int propid, double value);
 private:
+    int camNum;
     cv::VideoCapture* vidcap;
     cv::Mat _frame;
 
