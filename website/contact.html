@@ -25,68 +25,98 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   <style type="text/css">
-    .circular {
-        width: 300px;
-        height: 300px;
-        border-radius: 150px;
-        -webkit-border-radius: 150px;
-        -moz-border-radius: 150px;
-        box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-        margin: auto;
-	}
+        @font-face{
+            font-family: "D3Roadsterism";
+            src: url('resources/fonts/D3Roadsterism.ttf'),
+            url('resources/fonts/D3Roadsterism.eot'); /* IE */
+        }
+        
+        header {
+            width: 100%;
+            background-color: rgba(22, 24, 55, 0.95);
+        }
+        
+        nav {
+            background-color: rgba(22, 24, 55, 0.95);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #logo {
+            background-image: url('resources/images/MotionIncSmall.jpg');
+        }
+        
+        .nav > li {
+            padding-top: 10px;
+        }
     
-    .morgan-img {
-        background: url('resources/images/1.jpg') no-repeat;
-    }
-    
-    .justin-img {
-        background: url('resources/images/2.jpg') no-repeat;
-    }
-    
-    .brandon-img {
-        background: url('resources/images/3.jpg') no-repeat;
-    }
-    
-    .circular img {
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
+        .circular {
+            width: 300px;
+            height: 300px;
+            border-radius: 150px;
+            -webkit-border-radius: 150px;
+            -moz-border-radius: 150px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+            -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+            -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+            margin: auto;
+        }
+        
+        .morgan-img {
+            background: url('resources/images/morgan.jpg') no-repeat;
+        }
+        
+        .justin-img {
+            background: url('resources/images/2.jpg') no-repeat;
+        }
+        
+        .brandon-img {
+            background: url('resources/images/3.jpg') no-repeat;
+        }
+        
+        .circular img {
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
   </style><style id="holderjs-style" type="text/css"></style></head>
 
   <body role="document">
 
     <!-- Fixed navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Welcome</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="documents.html">Documents</a></li>
-            <li class="active"><a href="">Contact Us</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </div>
+    <header style="padding: 0.5em 0;">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <div class="container" style="margin-top: 1em; margin-bottom: 1em;">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a id="logo" class="navbar-brand img-rounded" href="index.html" style="height: 70px; width: 156px; background-repeat: no-repeat;">
+                <span style="padding-left: 150px; font-weight: 700; color: #777; font-family: 'D3Roadsterism', Times, serif;">Motion</span>
+                <span style="padding-left: 170px; font-weight: 700; color: #777; font-family: 'D3Roadsterism', Times, serif;">Inc</span>
+              </a>
+            </div>
+            <div class="navbar-collapse collapse" style="float: right;">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">Overview</a></li>
+                <li><a href="documents.html">Documents</a></li>
+                <li><a href="">Contact Us</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+    </header>
 
     <div class="container theme-showcase" role="main">
-        <div class="row" style="margin-top: 70px;">
+        <div class="row" style="margin-top: 110px;">
             <div class="col-md-4" style="margin-bottom: 50px;">
                 <h1 style="line-height: 26px; text-align: center; font-family: 'Trebuchet MS', Helvetica, sans-serif;">Morgan McKenzie</h1>
                 <hr style="max-width: 320px;">
                 <div class="circular morgan-img">
-                    <img src="resources/images/1.jpg"/>
+                    <img src="resources/images/morgan.jpg"/>
                 </div>
                 <div style="max-width: 320px; padding-top: 20px; margin: auto;">
                     <p style="padding-left: 10px; font-weight: bold;">Morgan is a blah blah blah blah blah blah blah blah blah</p>
@@ -101,7 +131,7 @@
                 </div>
                 <div style="max-width: 320px; padding-top: 20px; margin: auto;">
                     <p style="padding-left: 10px; font-weight: bold;">Justin is a blah blah blah blah blah blah blah blah blah</p>
-                    <p style="padding-left: 10px; font-weight: bold;">???@uvic.ca</p>
+                    <p style="padding-left: 10px; font-weight: bold;">ssketchy@gmail.com</p>
                 </div>
             </div>
             <div class="col-md-4" style="margin-bottom: 50px;">
