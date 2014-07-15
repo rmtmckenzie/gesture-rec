@@ -9,7 +9,7 @@ class OpenCVCameraSource : public QObject
 {
     Q_OBJECT
 public:
-    explicit OpenCVCameraSource(int num, QObject *parent = 0);
+    explicit OpenCVCameraSource(QObject *parent = 0);
     ~OpenCVCameraSource();
 
     cv::Mat update();
@@ -19,6 +19,8 @@ public:
     bool isReady();
 
     void set(int propid, double value);
+
+    void init();
 private:
     int camNum;
     cv::VideoCapture* vidcap;

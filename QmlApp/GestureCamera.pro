@@ -8,21 +8,6 @@ QML_IMPORT_PATH =
 
 QT += multimedia
 
-# The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp \
-    cameraview.cpp \
-    camerasource.cpp \
-    videosurface.cpp \
-    handrecapi.cpp \
-    Processing/opencvcamerasource.cpp \
-    Processing/filter.cpp \
-    Processing/parser.cpp \
-    Processing/recognizer.cpp \
-    Processing/opencvvideobuffer.cpp \
-    Processing/camerasettings.cpp \
-    Processing/handrecthread.cpp \
-    Processing/handrecprivate.cpp
-
 win32 | win64 {
 
     #For this to work on windows, must define OPENCV_DIR.
@@ -66,10 +51,21 @@ win32 | win64 {
 include(qtquick2controlsapplicationviewer/qtquick2controlsapplicationviewer.pri)
 qtcAddDeployment()
 
+SOURCES += main.cpp \
+    cameraview.cpp \
+    handrecapi.cpp \
+    Processing/opencvcamerasource.cpp \
+    Processing/filter.cpp \
+    Processing/parser.cpp \
+    Processing/recognizer.cpp \
+    Processing/opencvvideobuffer.cpp \
+    Processing/camerasettings.cpp \
+    Processing/handrecthread.cpp \
+    Processing/handrecprivate.cpp \
+    Utils/jsonreader.cpp
+
 HEADERS += \
     cameraview.hpp \
-    camerasource.hpp \
-    videosurface.hpp \
     handrecapi.hpp \
     Processing/opencvcamerasource.hpp \
     Processing/filter.hpp \
@@ -78,4 +74,5 @@ HEADERS += \
     Processing/opencvvideobuffer.hpp \
     Processing/camerasettings.hpp \
     Processing/handrecthread.hpp \
-    Processing/handrecprivate.h
+    Processing/handrecprivate.hpp \
+    Utils/jsonreader.hpp

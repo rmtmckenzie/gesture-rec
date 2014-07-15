@@ -1,6 +1,7 @@
 #include "cameraview.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
+
 #include <QPainter>
 #include <QVideoSurfaceFormat>
 #include <QQuickWindow>
@@ -11,44 +12,48 @@
 CameraView::CameraView(QQuickItem *parent) :
     QQuickPaintedItem(parent),
     m_playing(true),
-    surface(this),
-    source(&surface,this),
-    m_format(QImage::Format_Invalid)
+    m_format(HandRecAPI::IMAGE_FORMAT),
+    m_handrec(NULL)
 {
 //    source.init();
 //    connect(&surface,&VideoSurface::frameReceived,this,&CameraView::receiveFrame);
 //    connect(&surface,&VideoSurface::surfaceFormatChanged,this,&CameraView::updateFormat);
 //    source.start();
 
-    bool result = handrec.init(1);
-    m_format = QImage::Format_RGB888;
-    if(result){
-        connect(&handrec,&HandRecAPI::frameUpdate,this,&CameraView::receiveFrame);
-        qDebug() << "Image Format:" << m_format;
-        qDebug() << "Frame Format:" << handrec.format();
-    }
 }
 
-QString CameraView::name() const
+QColor CameraView::getColor(int x, int y)
 {
-    return m_name;
+    int xt = x*(curframe.width()/width());
+    int yt = y*(curframe.height()/height());
+    curframe.map(QAbstractVideoBuffer::ReadOnly);
+    QImage im(
+                curframe.bits(), curframe.width(), curframe.height(),
+                curframe.bytesPerLine(), m_format);
+    QColor toret(im.pixel(xt,yt));
+    im.setPixel(xt,yt,qRgb(255,0,0));
+    curframe.unmap();
+    update();
+    return toret;
 }
 
-void CameraView::setName(QString n)
-{
-    m_name = n;
-    emit nameChanged(m_name);
-}
+
 
 bool CameraView::playing() const
 {
     return m_playing;
 }
 
-void CameraView::setPlaying(bool p)
+void CameraView::play()
 {
-    m_playing = p;
-    emit playingChanged(p);
+    m_playing = true;
+    emit playingChanged(true);
+}
+
+void CameraView::pause()
+{
+    m_playing = false;
+    emit playingChanged(false);
 }
 
 void CameraView::receiveFrame(QVideoFrame frame)
@@ -59,19 +64,10 @@ void CameraView::receiveFrame(QVideoFrame frame)
     }
 }
 
-void CameraView::updateFormat(const QVideoSurfaceFormat &format)
-{
-    qDebug() << "SURFACE FORMAT PIXEL:" << format.pixelFormat();
-    m_format = QVideoFrame::imageFormatFromPixelFormat(format.pixelFormat());
-}
-
 void CameraView::paint(QPainter *painter)
 {
     //TODO: replace this with QSG/OpenGL
-
-//    qDebug() << "Repaint...";
-
-    if(m_format != QImage::Format_Invalid){
+    if(curframe.isValid()){
         curframe.map(QAbstractVideoBuffer::ReadOnly);
         QImage im(
                     curframe.bits(), curframe.width(), curframe.height(),
@@ -83,8 +79,34 @@ void CameraView::paint(QPainter *painter)
         curframe.unmap();
     } else {
         //TODO: Replace with loading image.
-        painter->fillRect(contentsBoundingRect(), Qt::red);
+//        painter->fillRect(contentsBoundingRect(), Qt::red);
     }
 }
+
+QQuickItem *CameraView::api() const
+{
+    return (QQuickItem*)m_handrec;
+}
+
+void CameraView::setApi(QQuickItem *api)
+{
+    if(m_handrec){
+        disconnect(m_handrec,&HandRecAPI::frameUpdate,this,&CameraView::receiveFrame);
+    }
+
+    if(api){
+        HandRecAPI* hr = qobject_cast<HandRecAPI*>(api);
+        if(hr){
+            m_handrec = hr;
+            qDebug() << "Cameraview connected...";
+            connect(m_handrec,&HandRecAPI::frameUpdate,this,&CameraView::receiveFrame);
+        } else {
+            qWarning("Invalid QQuickItem set to CameraView.api");
+            m_handrec = NULL;
+        }
+    }
+    emit apiChanged((QQuickItem*)m_handrec);
+}
+
 
 

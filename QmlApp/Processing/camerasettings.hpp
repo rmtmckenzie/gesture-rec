@@ -7,6 +7,9 @@
 #include "filter.hpp"
 #include "parser.hpp"
 #include "recognizer.hpp"
+#include <QRgb>
+
+#include "../Utils/jsonreader.hpp"
 
 class CameraSettings: public QObject
 {
@@ -18,6 +21,7 @@ public:
                             Parser* p,
                             Recognizer* r,
                             QObject* parent = 0);
+    ~CameraSettings();
 
 public slots:
     void fps(double f);
@@ -31,9 +35,12 @@ public slots:
     void displayRes(int w, int h);
     void captureRes(int w, int h);
 
-    void filterTintRange(double l, double h);
+    void resetHandColors();
+    void addHandColor(QRgb color);
 
     void frameStage(int s);
+
+    void changeCam(unsigned int c);
 
 public:
     //todo make into enum
@@ -45,6 +52,7 @@ private:
     Parser *_parser;
     Recognizer *_recognizer;
     int _stage;
+    JsonReader settings;
 };
 
 #endif // CAMERASETTINGS_H
