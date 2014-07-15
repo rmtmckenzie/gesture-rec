@@ -107,6 +107,16 @@ ApplicationWindow {
                 }
             }
 
+            GreenButton{
+                text: "View\nSubtracted"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                   handrec.stage = 3;
+                }
+            }
+
 
         }
     }
