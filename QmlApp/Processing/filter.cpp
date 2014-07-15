@@ -91,6 +91,6 @@ void Filter::updateScalars()
 
 void Filter::printColors()
 {
-    qDebug() << "Low:" << lowColor[0] << "," << lowColor[1] << "," << lowColor[2];
-    qDebug() << "High:" << highColor[0] << "," << highColor[1] << "," << highColor[2];
+    qDebug() << "Low:" << lh << "," << ll << "," << ls;
+    qDebug() << "High:" << hh << "," << hl << "," << hs;
 }
