@@ -41,13 +41,19 @@ void HandRecThread::TakeBackgroundImage()
 }
 
 void HandRecThread::process(){
-    cv::Mat frame, filtered, tosend;
+    cv::Mat frame, filtered, tosend, subtracted;
     frame = cam.update();
 
     filtered = filter.filter(frame);
 
     switch(settings.stage()){
+    case 3:
+        //Subtract first
+        absdiff(frame.clone(),backgroundImage, subtracted);
+        cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
+        break;
     case 2:
+        //View the Background Image
         tosend = backgroundImage;
         break;
     case 1:
