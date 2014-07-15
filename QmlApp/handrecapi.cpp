@@ -103,3 +103,8 @@ void HandRecAPI::receiveFrame(QVideoFrame frame)
 {
     emit frameUpdate(frame);
 }
+
+void HandRecAPI::invokeTakeBackgroundImage()
+{
+    priv.TakeBackgroundImage();
+}

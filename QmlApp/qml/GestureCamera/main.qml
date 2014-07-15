@@ -87,6 +87,26 @@ ApplicationWindow {
                 }
             }
 
+            GreenButton{
+                text: "Take\nBackground"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                    handrec.invokeTakeBackgroundImage();
+                }
+            }
+
+            GreenButton{
+                text: "View\nBackground"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                   handrec.stage = 2;
+                }
+            }
+
 
         }
     }
