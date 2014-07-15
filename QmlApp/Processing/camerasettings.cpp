@@ -26,21 +26,26 @@ CameraSettings::CameraSettings(OpenCVCameraSource* s, Filter *f, Parser *p,
         qDebug() << "No settings file";
     } else {
         QJsonObject o = settings.object();
-        QJsonValue c; QRgb r; cv::Scalar s;
+        QString st;
 
         qDebug() << "Settings found.";
 
-        c = o["lowColor"];
-        r = (unsigned int)c.toInt();
-        _filter->lh = qRed(r);
-        _filter->ll = qGreen(r);
-        _filter->ls = qBlue(r);
+        st = o["lowColor"].toString();
 
-        c = o["lowColor"];
-        r = (unsigned int)c.toInt();
-        _filter->hh = qRed(r);
-        _filter->hl = qGreen(r);
-        _filter->hs = qBlue(r);
+        unsigned int h,s,l;
+
+        QTextStream(&st) >> h >> l >> s;
+
+        _filter->lh = h;
+        _filter->ll = l;
+        _filter->ls = s;
+
+        st = o["highColor"].toString();
+        QTextStream(&st) >> h >> l >> s;
+
+        _filter->hh = h;
+        _filter->hl = l;
+        _filter->hs = s;
 
         _filter->updateScalars();
         _filter->printColors();
@@ -50,14 +55,20 @@ CameraSettings::CameraSettings(OpenCVCameraSource* s, Filter *f, Parser *p,
 CameraSettings::~CameraSettings()
 {
     QJsonObject o = settings.object();
-    cv::Scalar s = _filter->lowColor;
-    QRgb r = qRgb(_filter->lh,_filter->ll,_filter->ls);
+    QString format("%1 %2 %3");
 
-    o.insert("lowColor",QJsonValue((int)r));
+    qDebug() << "Saving:";
+    _filter->printColors();
 
-    s = _filter->highColor;
-    r = qRgb(_filter->hh,_filter->hl,_filter->hs);
-    o.insert("highColor",QJsonValue((int)r));
+    o.insert("lowColor",QJsonValue(format.arg(
+                                        QString::number((uint)_filter->lh),
+                                        QString::number((uint)_filter->ll),
+                                        QString::number((uint)_filter->ls))));
+    o.insert("highColor",QJsonValue(format.arg(
+                                        QString::number((uint)_filter->hh),
+                                        QString::number((uint)_filter->hl),
+                                        QString::number((uint)_filter->hs))));
+
     settings.setObject(o);
 }
 
