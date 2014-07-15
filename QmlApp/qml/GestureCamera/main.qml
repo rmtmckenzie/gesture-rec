@@ -1,39 +1,102 @@
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import QtMultimedia 5.0
 
 import Motion.View 1.0
+import Motion.HandRec 1.0
 
+import "InterfaceElements"
 
 ApplicationWindow {
     title: qsTr("Camera Capture")
-    width: 640
+    id: root
+    width: 640+80
     height: 480
 //    width:320
 //    height:240
 
+    HandRec {
+        id: handrec
+        camNumber:0
+        running:true
+    }
 
-
-    CameraView{
-        id: view
-        name : "qhwer"
+    Row{
         anchors.fill: parent
-        onNameChanged: {
-            update()
+        CameraView{
+            id: view
+
+            api: handrec
+
+            height: parent.height
+            width: root.width-80
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+            }
+
+            onNameChanged: {
+                update()
+            }
+
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    var c = view.getColor(mouse.x,mouse.y);
+//                    console.log(c)
+                    handrec.addHandColor(c);
+
+                }
+            }
         }
 
-//        MouseArea{
-//            anchors.fill: parent
-//            onClicked: {
-//                view.playing = !view.playing;
-//            }
-//        }
+        Column{
+            height: parent.height - 20
+            width: parent.width - view.width
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: 10
+
+            YellowButton{
+                text: "Reset\nColours"
+                anchors{
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                    handrec.resetHandColors()
+                }
+            }
+
+            GreenButton{
+                text: "Frame 0"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                    handrec.stage = 0
+                }
+            }
+
+            GreenButton{
+                text: "Frame 1"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                    handrec.stage = 1
+                }
+            }
+
+
+        }
     }
 
     Item{
         id:inputhandler
         focus:true
-        Keys.onSpacePressed: view.playing = !view.playing;
+        Keys.onSpacePressed: {
+            (view.playing ? view.pause(): view.play());
+        }
         Keys.onDigit0Pressed: ;
     }
 

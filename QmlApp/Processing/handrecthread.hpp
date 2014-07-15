@@ -17,14 +17,13 @@ class HandRecAPI;
 class HandRecThread : public QObject
 {
     Q_OBJECT
+    friend class HandRecPrivate;
 public:
-    explicit HandRecThread(int cam_number, QObject *parent = 0);
+
+    explicit HandRecThread(QObject *parent = 0);
 
     //called in thread by QThread::run
     void run();
-
-    //called outside thread before run starts!
-    bool init(HandRecAPI* api);
 
     //called outside thread; thread safe
     void stop();
@@ -39,9 +38,13 @@ private:
 
     bool keepRunning;
 
+    void process();
 signals:
     void updateFrame(QVideoFrame f);
     void _stop();
+
+protected:
+    void timerEvent(QTimerEvent *) Q_DECL_OVERRIDE;
 
 private slots:
     void quit(){keepRunning = false;}

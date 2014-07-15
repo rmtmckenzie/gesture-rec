@@ -6,54 +6,50 @@
 
 #include <QDebug>
 #include <QThread>
-HandRecThread::HandRecThread(int cam_number, QObject* parent):
+HandRecThread::HandRecThread(QObject* parent):
     QObject(parent),
-    cam(cam_number),
-    filter(),
-    parser(),
-    recognizer(),
-    settings(&cam,&filter,&parser,&recognizer),
+    cam(this),
+    filter(this),
+    parser(this),
+    recognizer(this),
+    settings(&cam,&filter,&parser,&recognizer,this),
     keepRunning(true)
 {
     connect(this,&HandRecThread::_stop,this,&HandRecThread::quit);
 }
 
-bool HandRecThread::init(HandRecAPI *api)
-{
-    //other intialization stuff goes here
-
-    //connect stuff from API to settings
-
-    return cam.isReady();
-}
-
 void HandRecThread::run()
 {
     qDebug() << "Hand Recognition Started!";
-    cv::Mat frame, filtered, *tosend;
 
-    //todo: check cam ready!
+    cam.init();
 
-    while(keepRunning){
-        frame = cam.update();
+    startTimer(0);
+}
 
-        filtered = filter.filter(frame);
+void HandRecThread::timerEvent(QTimerEvent *)
+{
+    process();
+}
 
-        switch(settings.stage()){
-        case 1:
-            tosend = &filtered;
-            break;
-        case 0:
-        default:
-            tosend = &frame;
-        }
+void HandRecThread::process(){
+    cv::Mat frame, filtered, tosend;
+    frame = cam.update();
 
-        OpenCVVideoBuffer* vidbuf = new OpenCVVideoBuffer(*tosend);
-        QVideoFrame qframe(vidbuf,QSize(tosend->cols,tosend->rows),OPENCV_PIXEL_FORMAT);
-        emit updateFrame(qframe);
-        //wait for at most 50 ms
-        QApplication::processEvents(QEventLoop::AllEvents,50);
+    filtered = filter.filter(frame);
+
+    switch(settings.stage()){
+    case 1:
+        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
+        break;
+    case 0:
+    default:
+        tosend = frame.clone();
     }
+
+    OpenCVVideoBuffer* vidbuf = new OpenCVVideoBuffer(tosend);
+    QVideoFrame qframe(vidbuf,QSize(tosend.cols,tosend.rows),OPENCV_PIXEL_FORMAT);
+    emit updateFrame(qframe);
 }
 
 void HandRecThread::stop()

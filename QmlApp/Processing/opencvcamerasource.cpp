@@ -5,18 +5,22 @@
 
 #include <QThread>
 
-OpenCVCameraSource::OpenCVCameraSource(int num, QObject *parent) :
+OpenCVCameraSource::OpenCVCameraSource(QObject *parent) :
     QObject(parent),
-    camNum(num)
+    camNum(0)
 {
-    vidcap = new cv::VideoCapture(num);
+}
+
+void OpenCVCameraSource::init(){
+
+    vidcap = new cv::VideoCapture(1);
     if(!vidcap->isOpened()){
         qDebug() << "Camera not found, defaulting to 0.";
     }
     vidcap->release();
     delete vidcap;
 
-    vidcap = new cv::VideoCapture(0);
+    vidcap = new cv::VideoCapture(camNum);
 
     vidcap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
     vidcap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -33,10 +37,14 @@ OpenCVCameraSource::~OpenCVCameraSource()
 
 void OpenCVCameraSource::switchCamera(int num)
 {
-    vidcap->release();
-    delete vidcap;
-    vidcap = new cv::VideoCapture(num);
-    camNum = num;
+    qDebug() << "Switching camera to " << num;
+    if(num != camNum){
+        vidcap->release();
+        delete vidcap;
+
+        vidcap = new cv::VideoCapture(num);
+        camNum = num;
+    }
 }
 
 bool OpenCVCameraSource::isReady()

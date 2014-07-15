@@ -4,42 +4,99 @@
 
 #include <QCamera>
 #include <QCameraInfo>
+#include <QRgb>
 
-HandRecAPI::HandRecAPI(QObject *parent) :
-    QObject(parent),
-    isInitialized(false)
+HandRecAPI::HandRecAPI(QQuickItem *parent) :
+    QQuickItem(parent),
+    priv(this),
+    m_running(false)
 {
-
+    if(m_running){
+        QObject::connect(priv.handrec,&HandRecThread::updateFrame,this,&HandRecAPI::receiveFrame,Qt::QueuedConnection);
+    }
 }
 
-bool HandRecAPI::init(int camnum){
-    handrec = new HandRecThread(camnum);
-    bool success = handrec->init((HandRecAPI*)this);
-
-    handrec->moveToThread(&runnerThread);
-    QObject::connect(&runnerThread,&QThread::started,handrec,&HandRecThread::run);
-    QObject::connect(&runnerThread,&QThread::finished,handrec,&HandRecThread::deleteLater);
-
-    QObject::connect(handrec,&HandRecThread::updateFrame,this,&HandRecAPI::receiveFrame,Qt::QueuedConnection);
-    qDebug() << "API: " << QThread::currentThreadId();
-    runnerThread.start();
-
-    isInitialized = true;
-
-    return success;
+bool HandRecAPI::running() const
+{
+    return m_running;
 }
 
-HandRecAPI::~HandRecAPI()
+void HandRecAPI::setRunning(bool r)
 {
-    handrec->stop();
-    runnerThread.quit();
-    runnerThread.wait();
+    if(r == m_running){
+        //do nothing
+    } else {
+        if(r){
+            qDebug() << "Running set to true!";
+            connect(priv.handrec,&HandRecThread::updateFrame,this,&HandRecAPI::receiveFrame,Qt::QueuedConnection);
+        } else {
+            disconnect(priv.handrec,&HandRecThread::updateFrame,this,&HandRecAPI::receiveFrame);
+        }
+        m_running = r;
+        emit runningChanged(r);
+    }
 }
 
-
-QVideoFrame::PixelFormat HandRecAPI::format()
+unsigned int HandRecAPI::camNumber() const
 {
-    return OPENCV_PIXEL_FORMAT;
+    return m_camNum;
+}
+
+void HandRecAPI::setCamNumber(unsigned int n)
+{
+    if(n != m_camNum){
+        priv.setCamNum(n);
+    }
+}
+
+unsigned int HandRecAPI::stage() const
+{
+    return m_stage;
+}
+
+void HandRecAPI::setStage(unsigned int s)
+{
+    if(s != m_stage){
+        priv.setStage(s);
+        m_stage = s;
+    }
+}
+
+QColor HandRecAPI::lowColor()
+{
+    return m_lowColor;
+}
+
+void HandRecAPI::setLowColor(QColor c)
+{
+    m_lowColor = c;
+    emit lowColorChanged(c);
+}
+
+QColor HandRecAPI::highColor()
+{
+    return m_highColor;
+}
+
+void HandRecAPI::setHighColor(QColor c)
+{
+    m_highColor = c;
+    emit highColorChanged(c);
+}
+
+void HandRecAPI::resetHandColors()
+{
+    priv.resetHandColors();
+}
+
+void HandRecAPI::addHandColor(QRgb colour)
+{
+    priv.addHandColor(colour);
+}
+
+void HandRecAPI::addHandColor(QColor colour)
+{
+    addHandColor(colour.rgb());
 }
 
 void HandRecAPI::receiveFrame(QVideoFrame frame)

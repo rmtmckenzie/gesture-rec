@@ -4,8 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QQuickPaintedItem>
-#include "camerasource.hpp"
-#include "videosurface.hpp"
+#include <QVideoSurfaceFormat>
 
 #include "handrecapi.hpp"
 
@@ -17,20 +16,26 @@ class CameraView : public QQuickPaintedItem
 public:
     explicit CameraView(QQuickItem *parent = 0);
 
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-    Q_PROPERTY(bool playing READ playing WRITE setPlaying NOTIFY playingChanged)
+    Q_PROPERTY(QQuickItem* api READ api WRITE setApi NOTIFY apiChanged)
+    Q_PROPERTY(bool playing READ playing NOTIFY playingChanged)
 
-//    Q_INVOKABLE QColor getColor(QPoint pos);
+    Q_INVOKABLE QColor getColor(int x, int y);
+    Q_INVOKABLE void play();
+    Q_INVOKABLE void pause();
 
     QString name() const;
     void setName(QString n);
 
-    bool playing() const;
-    void setPlaying(bool p);
-
     void paint(QPainter *painter) Q_DECL_OVERRIDE;
 
+    QQuickItem* api() const;
+    void setApi(QQuickItem* api);
+
+    bool playing() const;
+
 signals:
+    void apiChanged(QQuickItem* api);
+
     void nameChanged(QString name);
     void playingChanged(bool playing);
 
@@ -39,18 +44,13 @@ private:
     bool m_playing;
     QString m_name;
 
-    VideoSurface surface;
-    CameraSource source;
-
-    HandRecAPI handrec;
-
     QVideoFrame curframe;
     QImage::Format m_format;
+    HandRecAPI* m_handrec;
 signals:
 
 protected slots:
     void receiveFrame(QVideoFrame frame);
-    void updateFormat(const QVideoSurfaceFormat& format);
 };
 
 
