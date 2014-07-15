@@ -22,6 +22,9 @@ public:
     void setCamNum(unsigned int n);
     void setStage(unsigned int s);
 
+    void TakeBackgroundImage();
+    void ReturnBackgroundImage();
+
 private:
     QThread runnerThread;
     HandRecThread* handrec;
@@ -34,6 +37,8 @@ signals:
     void _resetHandColors();
     void _setCamNum(unsigned int n);
     void _setStage(unsigned int s);
+
+    void _takeBackgroundImage();
 
 public slots:
 

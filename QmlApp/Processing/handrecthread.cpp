@@ -32,6 +32,14 @@ void HandRecThread::timerEvent(QTimerEvent *)
     process();
 }
 
+void HandRecThread::TakeBackgroundImage()
+{
+    qDebug("INto function");
+    cv::Mat frame;
+    frame = cam.update();
+    backgroundImage = frame.clone();
+}
+
 void HandRecThread::process(){
     cv::Mat frame, filtered, tosend;
     frame = cam.update();
@@ -39,6 +47,9 @@ void HandRecThread::process(){
     filtered = filter.filter(frame);
 
     switch(settings.stage()){
+    case 2:
+        tosend = backgroundImage;
+        break;
     case 1:
         cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
         break;

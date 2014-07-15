@@ -28,6 +28,8 @@ public:
     //called outside thread; thread safe
     void stop();
 
+    void TakeBackgroundImage();
+
 private:
     OpenCVCameraSource cam;
     Filter filter;
@@ -35,6 +37,8 @@ private:
     Recognizer recognizer;
 
     CameraSettings settings;
+
+    cv::Mat backgroundImage;
 
     bool keepRunning;
 
@@ -45,6 +49,8 @@ signals:
 
 protected:
     void timerEvent(QTimerEvent *) Q_DECL_OVERRIDE;
+
+public slots:
 
 private slots:
     void quit(){keepRunning = false;}

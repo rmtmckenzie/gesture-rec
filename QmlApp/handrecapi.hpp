@@ -27,6 +27,8 @@ public:
     Q_INVOKABLE void resetHandColors(); //TODO replace with list of colours?
     Q_INVOKABLE void addHandColor(QColor colour);
 
+    Q_INVOKABLE void invokeTakeBackgroundImage();
+
 //////////////////////// REGULAR API /////////////////////////
 signals:
     void frameUpdate(QVideoFrame frame);
