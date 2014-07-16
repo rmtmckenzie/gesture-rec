@@ -106,7 +106,24 @@ ApplicationWindow {
                    handrec.stage = 2;
                 }
             }
-
+            GreenButton{
+                text: "Set Exposure\n0.3"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                   handrec.exposure = 0.3;
+                }
+            }
+            GreenButton{
+                text: "Set Exposure\n0.8"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                   handrec.exposure = 0.8;
+                }
+            }
 
         }
     }

@@ -59,6 +59,16 @@ void HandRecAPI::setStage(unsigned int s)
     if(s != m_stage){
         priv.setStage(s);
         m_stage = s;
+        emit stageChanged(s);
+    }
+}
+
+void HandRecAPI::setExposure(float arg)
+{
+    if (m_exposure != arg) {
+        m_exposure = arg;
+        priv.setExposure(arg);
+        emit exposureChanged(arg);
     }
 }
 
@@ -76,6 +86,11 @@ void HandRecAPI::setLowColor(QColor c)
 QColor HandRecAPI::highColor()
 {
     return m_highColor;
+}
+
+float HandRecAPI::exposure() const
+{
+    return m_exposure;
 }
 
 void HandRecAPI::setHighColor(QColor c)

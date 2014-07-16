@@ -26,7 +26,6 @@ void OpenCVCameraSource::init(){
     vidcap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
     qDebug() << "Height" << vidcap->get(CV_CAP_PROP_FRAME_HEIGHT);
     qDebug() << "Width" << vidcap->get(CV_CAP_PROP_FRAME_WIDTH);
-
 }
 
 OpenCVCameraSource::~OpenCVCameraSource()

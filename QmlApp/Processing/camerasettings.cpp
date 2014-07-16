@@ -112,7 +112,7 @@ void CameraSettings::gain(double g)
 void CameraSettings::exposure(double e)
 {
     rangeRestrictOne(&e);
-    _camSource->set(CV_CAP_PROP_GAMMA,e);
+    _camSource->set(CV_CAP_PROP_EXPOSURE,e);
 }
 
 void CameraSettings::displayRes(int w, int h)
