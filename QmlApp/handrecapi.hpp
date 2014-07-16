@@ -63,6 +63,8 @@ public:
         unsigned int stage() const;
         void setStage(unsigned int s);
 
+        void setExposure(double a, double e);
+
         QColor lowColor();
         QColor highColor();
 

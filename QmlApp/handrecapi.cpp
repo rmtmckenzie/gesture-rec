@@ -108,3 +108,8 @@ void HandRecAPI::invokeTakeBackgroundImage()
 {
     priv.TakeBackgroundImage();
 }
+
+void HandRecAPI::setExposure(double a, double e)
+{
+    priv.setExposure(a,e);
+}
