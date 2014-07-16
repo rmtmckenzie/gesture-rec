@@ -107,10 +107,13 @@ void CameraSettings::gain(double g)
 void CameraSettings::exposure(double a, double e)
 {
     qDebug("Setting Exposure");
-    rangeRestrictOne(&a);
-    rangeRestrictOne(&e);
+    //rangeRestrictOne(&a);
+    //rangeRestrictOne(&e);
+
+    //Can't seem to get auto exposure to turn back on
     // 0 - Auto, 1 - Manual
-    _camSource->set(CV_CAP_PROP_AUTO_EXPOSURE, a);
+    //_camSource->set(CV_CAP_PROP_AUTO_EXPOSURE, a);
+
     //Range: -11 -> 1
     _camSource->set(CV_CAP_PROP_EXPOSURE,e);
 }
