@@ -30,6 +30,7 @@ void HandRecPrivate::setupConnections()
     connect(this, &HandRecPrivate::_resetHandColors, s, &CameraSettings::resetHandColors);
     connect(this, &HandRecPrivate::_addHandColor, s, &CameraSettings::addHandColor);
     connect(this, &HandRecPrivate::_setStage, s, &CameraSettings::frameStage);
+    connect(this, &HandRecPrivate::_setExposure, s, &CameraSettings::exposure);
 
     connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage);
 }
@@ -52,6 +53,11 @@ void HandRecPrivate::setCamNum(unsigned int n)
 void HandRecPrivate::setStage(unsigned int s)
 {
     emit _setStage(s);
+}
+
+void HandRecPrivate::setExposure(double a, double e)
+{
+    emit _setExposure(a,e);
 }
 
 void HandRecPrivate::TakeBackgroundImage()

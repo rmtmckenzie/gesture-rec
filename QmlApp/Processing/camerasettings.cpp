@@ -45,6 +45,9 @@ CameraSettings::CameraSettings(OpenCVCameraSource* s, Filter *f, Parser *p,
         _filter->updateScalars();
         _filter->printColors();
     }
+
+    //Setup Camera
+    //exposure(1,100);
 }
 
 CameraSettings::~CameraSettings()
@@ -98,10 +101,13 @@ void CameraSettings::gain(double g)
     _camSource->set(CV_CAP_PROP_GAIN, g);
 }
 
-void CameraSettings::exposure(double e)
+void CameraSettings::exposure(double a, double e)
 {
+    qDebug("Setting Exposure");
+    rangeRestrictOne(&a);
     rangeRestrictOne(&e);
-    _camSource->set(CV_CAP_PROP_GAMMA,e);
+    _camSource->set(CV_CAP_PROP_AUTO_EXPOSURE, a);
+    _camSource->set(CV_CAP_PROP_EXPOSURE,e);
 }
 
 void CameraSettings::displayRes(int w, int h)
