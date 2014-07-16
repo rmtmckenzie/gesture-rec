@@ -30,7 +30,7 @@ public slots:
     void saturation(double s);
     void hue(double h);
     void gain(double g);
-    void exposure(double e);
+    void exposure(double a,double e);
 
     void displayRes(int w, int h);
     void captureRes(int w, int h);
