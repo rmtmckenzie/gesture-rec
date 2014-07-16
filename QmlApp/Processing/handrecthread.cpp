@@ -46,11 +46,18 @@ void HandRecThread::process(){
 
     filtered = filter.filter(frame);
 
+    cv::Mat cvtFiltered, cvtBackground;
+
     switch(settings.stage()){
     case 3:
         //Subtract first
-        absdiff(frame.clone(),backgroundImage, subtracted);
-        cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
+        //absdiff(frame.clone(),backgroundImage, subtracted);
+        //cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
+
+        //Subtract second
+        cv::cvtColor(filtered,cvtFiltered,CV_GRAY2RGB);
+        cv::cvtColor(filter.filter(backgroundImage),cvtBackground,CV_GRAY2RGB);
+        absdiff(cvtFiltered,cvtBackground,tosend);
         break;
     case 2:
         //View the Background Image
