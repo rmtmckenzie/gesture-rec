@@ -23,7 +23,7 @@ public:
     void init();
 private:
     int camNum;
-    cv::VideoCapture* vidcap;
+    cv::VideoCapture vidcap;
     cv::Mat _frame;
 
 signals:
