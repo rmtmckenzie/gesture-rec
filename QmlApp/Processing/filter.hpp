@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include <opencv2/video/video.hpp>
+#include "defines.hpp"
 #include <QRgb>
 
 class Filter : public QObject
@@ -17,20 +17,20 @@ public:
     void resetColors();
     void addColor(QRgb c);
 
-    cv::Mat filter(const cv::Mat inmat);
-    void setBackground(const cv::Mat inmat);
-    cv::Mat getBackground();
-    cv::Mat getBackDiff(const cv::Mat inmat);
+    cMat filter(const cMat inmat);
+    void setBackground(const cMat inmat);
+    cMat getBackground();
+    cMat getBackDiff(const cMat inmat);
 
     void printColors();
 
 private:
     unsigned char lh,ll,ls, hh,hl,hs;
-    cv::Scalar lowColor;
-    cv::Scalar highColor;
+    cColor lowColor;
+    cColor highColor;
 
-    cv::Mat backgroundImage;
-    cv::Mat backgroundFiltered;
+    cMat backgroundImage;
+    cMat backgroundFiltered;
 
     void updateScalars();
 

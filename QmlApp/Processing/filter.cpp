@@ -3,6 +3,8 @@
 #include <QColor>
 #include <QDebug>
 
+#include <opencv2/video/video.hpp>
+
 Filter::Filter(QObject *parent) :
     QObject(parent)
 {
@@ -22,7 +24,7 @@ void Filter::addColor(QRgb c)
     QColor col(c);
     unsigned char h,l,s;
     unsigned char* convd;
-    cv::Mat conv(1,1,CV_8UC3,cv::Scalar(col.blue(),col.green(),col.red()));
+    cMat conv(1,1,CV_8UC3,cColor(col.blue(),col.green(),col.red()));
 
     cv::cvtColor(conv,conv,cv::COLOR_BGR2HLS);
     convd = (unsigned char*)conv.data;
@@ -51,32 +53,32 @@ void Filter::addColor(QRgb c)
     updateScalars();
 }
 
-void Filter::setBackground(const cv::Mat inmat)
+void Filter::setBackground(const cMat inmat)
 {
     backgroundImage = inmat.clone();
     backgroundFiltered = filter(backgroundImage);
 }
 
-cv::Mat Filter::getBackground()
+cMat Filter::getBackground()
 {
     return backgroundImage;
 }
 
-cv::Mat Filter::getBackDiff(const cv::Mat inmat)
+cMat Filter::getBackDiff(const cMat inmat)
 {
     //Subtract first
     //absdiff(frame.clone(),backgroundImage, subtracted);
     //cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
 
     //Subtract second
-    cv::Mat diff;
+    cMat diff;
     absdiff(backgroundFiltered,inmat,diff);
     return diff;
 }
 
-cv::Mat Filter::filter(const cv::Mat inmat)
+cMat Filter::filter(const cMat inmat)
 {
-    cv::Mat mat;
+    cMat mat;
     //TODO - downsize to ?? (320 x 240?)
     // by cv::pyrDown(in,out,cv::Size((src.cols+1)/?,(src.rows+1)/?)
 
@@ -87,7 +89,7 @@ cv::Mat Filter::filter(const cv::Mat inmat)
     cv::cvtColor(mat,mat,cv::COLOR_RGB2HLS);
 
     //make bw array
-    cv::Mat bw(mat.rows,mat.cols,CV_8U);
+    cMat bw(mat.rows,mat.cols,CV_8U);
 
     //figure out what scalar and scalar are supposed to be
     cv::inRange(mat,lowColor,highColor,bw);
