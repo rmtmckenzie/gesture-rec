@@ -116,22 +116,25 @@ ApplicationWindow {
                    handrec.stage = 2;
                 }
             }
+
             GreenButton{
-                text: "Set Exposure\n0.3"
+                text: "View\nSubtracted"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
-                   handrec.exposure = 0.3;
+                   handrec.stage = 3;
                 }
             }
+
+
             GreenButton{
-                text: "Set Exposure\n0.8"
+                text: "View\nSubtracted"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
-                   handrec.exposure = 0.8;
+                   handrec.stage = 3;
                 }
             }
 

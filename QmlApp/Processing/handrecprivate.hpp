@@ -21,7 +21,7 @@ public:
     void addHandColor(QRgb color);
     void setCamNum(unsigned int n);
     void setStage(unsigned int s);
-    void setExposure(float f);
+    void setExposure(double a, double e);
 
     void TakeBackgroundImage();
     void ReturnBackgroundImage();
@@ -38,8 +38,7 @@ signals:
     void _resetHandColors();
     void _setCamNum(unsigned int n);
     void _setStage(unsigned int s);
-    void _setExposure(double d);
-
+    void _setExposure(double a, double e);
     void _takeBackgroundImage();
 
 public slots:

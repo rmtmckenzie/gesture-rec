@@ -20,7 +20,7 @@ public:
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(unsigned int camNumber READ camNumber WRITE setCamNumber NOTIFY camNumberChanged)
     Q_PROPERTY(unsigned int stage READ stage WRITE setStage NOTIFY stageChanged)
-    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
+//    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
 
     Q_PROPERTY(QColor lowColor READ lowColor NOTIFY lowColorChanged)
     Q_PROPERTY(QColor highColor READ highColor NOTIFY highColorChanged)
@@ -58,6 +58,8 @@ public:
         bool running() const;
         unsigned int camNumber() const;
         unsigned int stage() const;
+
+        void setExposure(double a, double e);
         QColor lowColor();
         QColor highColor();
         float exposure() const;
@@ -66,7 +68,7 @@ public slots:
         void setRunning(bool r);
         void setCamNumber(unsigned int n);
         void setStage(unsigned int s);
-        void setExposure(float arg);
+//        void setExposure(float arg);
 
 signals:
         void runningChanged(bool r);

@@ -50,6 +50,9 @@ CameraSettings::CameraSettings(OpenCVCameraSource* s, Filter *f, Parser *p,
         _filter->updateScalars();
         _filter->printColors();
     }
+
+    //Setup Camera
+    //exposure(1,100);
 }
 
 CameraSettings::~CameraSettings()
@@ -82,18 +85,21 @@ void CameraSettings::fps(double f)
 void CameraSettings::brightness(double b)
 {
     rangeRestrictOne(&b);
+    //Range 30->255
     _camSource->set(CV_CAP_PROP_BRIGHTNESS, b);
 }
 
 void CameraSettings::contrast(double c)
 {
     rangeRestrictOne(&c);
+    //Range 0->10
     _camSource->set(CV_CAP_PROP_CONTRAST, c);
 }
 
 void CameraSettings::saturation(double s)
 {
     rangeRestrictOne(&s);
+    //Range 0->200
     _camSource->set(CV_CAP_PROP_SATURATION, s);
 }
 
@@ -109,9 +115,17 @@ void CameraSettings::gain(double g)
     _camSource->set(CV_CAP_PROP_GAIN, g);
 }
 
-void CameraSettings::exposure(double e)
+void CameraSettings::exposure(double a, double e)
 {
-    rangeRestrictOne(&e);
+    qDebug("Setting Exposure");
+    //rangeRestrictOne(&a);
+    //rangeRestrictOne(&e);
+
+    //Can't seem to get auto exposure to turn back on
+    // 0 - Auto, 1 - Manual
+    //_camSource->set(CV_CAP_PROP_AUTO_EXPOSURE, a);
+
+    //Range: -11 -> 1
     _camSource->set(CV_CAP_PROP_EXPOSURE,e);
 }
 

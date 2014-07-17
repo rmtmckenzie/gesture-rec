@@ -63,14 +63,14 @@ void HandRecAPI::setStage(unsigned int s)
     }
 }
 
-void HandRecAPI::setExposure(float arg)
-{
-    if (m_exposure != arg) {
-        m_exposure = arg;
-        priv.setExposure(arg);
-        emit exposureChanged(arg);
-    }
-}
+//void HandRecAPI::setExposure(float arg)
+//{
+//    if (m_exposure != arg) {
+//        m_exposure = arg;
+//        priv.setExposure(arg);
+//        emit exposureChanged(arg);
+//    }
+//}
 
 QColor HandRecAPI::lowColor()
 {
@@ -122,4 +122,9 @@ void HandRecAPI::receiveFrame(QVideoFrame frame)
 void HandRecAPI::invokeTakeBackgroundImage()
 {
     priv.TakeBackgroundImage();
+}
+
+void HandRecAPI::setExposure(double a, double e)
+{
+    priv.setExposure(a,e);
 }
