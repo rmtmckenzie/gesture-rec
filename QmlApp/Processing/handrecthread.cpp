@@ -38,7 +38,7 @@ void HandRecThread::TakeBackgroundImage()
 }
 
 void HandRecThread::process(){
-    cMat filtered, tosend, subtracted;
+    cMat filtered, tosend;
     std::vector<cv::Point> contour;
     std::vector<std::vector<cv::Point> > contours;
 
@@ -63,7 +63,7 @@ void HandRecThread::process(){
         break;
     case 2:
         tosend = frame.clone();
-        cv::drawContours(tosend,contours,0,cv::Scalar(0,255,0));
+        cv::drawContours(tosend,contours,0,cColor(0,255,0));
         break;
     case 1:
         cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
