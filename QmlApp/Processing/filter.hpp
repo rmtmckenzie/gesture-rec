@@ -18,12 +18,19 @@ public:
     void addColor(QRgb c);
 
     cv::Mat filter(const cv::Mat inmat);
+    void setBackground(const cv::Mat inmat);
+    cv::Mat getBackground();
+    cv::Mat getBackDiff(const cv::Mat inmat);
 
     void printColors();
+
 private:
     unsigned char lh,ll,ls, hh,hl,hs;
     cv::Scalar lowColor;
     cv::Scalar highColor;
+
+    cv::Mat backgroundImage;
+    cv::Mat backgroundFiltered;
 
     void updateScalars();
 

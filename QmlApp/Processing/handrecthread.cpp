@@ -34,13 +34,11 @@ void HandRecThread::timerEvent(QTimerEvent *)
 
 void HandRecThread::TakeBackgroundImage()
 {
-    cv::Mat frame;
-    frame = cam.update();
-    backgroundImage = frame.clone();
+    filter.setBackground(frame);
 }
 
 void HandRecThread::process(){
-    cv::Mat frame, filtered, tosend, subtracted;
+    cv::Mat filtered, tosend, subtracted;
     std::vector<cv::Point> contour;
     std::vector<std::vector<cv::Point> > contours;
 
@@ -52,26 +50,20 @@ void HandRecThread::process(){
 
     contours.push_back(contour);
 
-    cv::Mat cvtFiltered, cvtBackground;
+//    cv::Mat cvtFiltered, cvtBackground;
 
     switch(settings.stage()){
     case 4:
-        tosend = frame.clone();
-        cv::drawContours(tosend,contours,0,cv::Scalar(0,255,0));
+        tosend = filter.getBackDiff(filtered);
+        cv::cvtColor(tosend,tosend,CV_GRAY2RGB);
         break;
     case 3:
-        //Subtract first
-        //absdiff(frame.clone(),backgroundImage, subtracted);
-        //cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
-
-        //Subtract second
-        cv::cvtColor(filtered,cvtFiltered,CV_GRAY2RGB);
-        cv::cvtColor(filter.filter(backgroundImage),cvtBackground,CV_GRAY2RGB);
-        absdiff(cvtFiltered,cvtBackground,tosend);
+        //View the Background Image
+        tosend = filter.getBackground();
         break;
     case 2:
-        //View the Background Image
-        tosend = backgroundImage;
+        tosend = frame.clone();
+        cv::drawContours(tosend,contours,0,cv::Scalar(0,255,0));
         break;
     case 1:
         cv::cvtColor(filtered,tosend,CV_GRAY2RGB);

@@ -93,7 +93,7 @@ ApplicationWindow {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
-                    handrec.stage = 3
+                    handrec.stage = 2
                 }
             }
 
@@ -113,7 +113,7 @@ ApplicationWindow {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
-                   handrec.stage = 2;
+                   handrec.stage = 3;
                 }
             }
 
@@ -123,21 +123,9 @@ ApplicationWindow {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
-                   handrec.stage = 3;
+                   handrec.stage = 4;
                 }
             }
-
-
-            GreenButton{
-                text: "View\nSubtracted"
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                }
-                onClicked: {
-                   handrec.stage = 3;
-                }
-            }
-
         }
     }
 

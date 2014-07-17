@@ -38,7 +38,7 @@ private:
 
     CameraSettings settings;
 
-    cv::Mat backgroundImage;
+    cv::Mat frame;
 
     bool keepRunning;
 
