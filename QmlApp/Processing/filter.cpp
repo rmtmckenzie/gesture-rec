@@ -49,14 +49,33 @@ void Filter::addColor(QRgb c)
     }
 
     updateScalars();
-
 }
 
+void Filter::setBackground(const cv::Mat inmat)
+{
+    backgroundImage = inmat.clone();
+    backgroundFiltered = filter(backgroundImage);
+}
 
+cv::Mat Filter::getBackground()
+{
+    return backgroundImage;
+}
+
+cv::Mat Filter::getBackDiff(const cv::Mat inmat)
+{
+    //Subtract first
+    //absdiff(frame.clone(),backgroundImage, subtracted);
+    //cv::cvtColor(filter.filter(subtracted),tosend,CV_GRAY2RGB);
+
+    //Subtract second
+    cv::Mat diff;
+    absdiff(backgroundFiltered,inmat,diff);
+    return diff;
+}
 
 cv::Mat Filter::filter(const cv::Mat inmat)
 {
-
     cv::Mat mat;
     //TODO - downsize to ?? (320 x 240?)
     // by cv::pyrDown(in,out,cv::Size((src.cols+1)/?,(src.rows+1)/?)
@@ -77,6 +96,7 @@ cv::Mat Filter::filter(const cv::Mat inmat)
 
     return bw;
 }
+
 
 void Filter::updateScalars()
 {
