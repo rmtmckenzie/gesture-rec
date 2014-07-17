@@ -68,7 +68,7 @@ ApplicationWindow {
             }
 
             GreenButton{
-                text: "Frame 0"
+                text: "Normal\nWebcam"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                 }
@@ -78,12 +78,22 @@ ApplicationWindow {
             }
 
             GreenButton{
-                text: "Frame 1"
+                text: "Filtered\nFrames"
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                 }
                 onClicked: {
                     handrec.stage = 1
+                }
+            }
+
+            GreenButton{
+                text: "Parsed\nHand"
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
+                onClicked: {
+                    handrec.stage = 3
                 }
             }
 

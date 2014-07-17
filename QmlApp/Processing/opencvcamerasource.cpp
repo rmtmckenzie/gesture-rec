@@ -7,60 +7,53 @@
 
 OpenCVCameraSource::OpenCVCameraSource(QObject *parent) :
     QObject(parent),
-    camNum(0)
+    camNum(0),
+    vidcap()
 {
 }
 
 void OpenCVCameraSource::init(){
-
-    vidcap = new cv::VideoCapture(1);
-    if(!vidcap->isOpened()){
+    vidcap.open(1);
+    if(!vidcap.isOpened()){
         qDebug() << "Camera not found, defaulting to 0.";
     }
-    vidcap->release();
-    delete vidcap;
+    vidcap.open(camNum);
 
-    vidcap = new cv::VideoCapture(camNum);
-
-    vidcap->set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    vidcap->set(CV_CAP_PROP_FRAME_HEIGHT, 240);
-    qDebug() << "Height" << vidcap->get(CV_CAP_PROP_FRAME_HEIGHT);
-    qDebug() << "Width" << vidcap->get(CV_CAP_PROP_FRAME_WIDTH);
+    vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
+    vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    qDebug() << "Height" << vidcap.get(CV_CAP_PROP_FRAME_HEIGHT);
+    qDebug() << "Width" << vidcap.get(CV_CAP_PROP_FRAME_WIDTH);
 }
 
 OpenCVCameraSource::~OpenCVCameraSource()
 {
-    vidcap->release();
-    delete vidcap;
+    vidcap.release();
 }
 
 void OpenCVCameraSource::switchCamera(int num)
 {
     qDebug() << "Switching camera to " << num;
     if(num != camNum){
-        vidcap->release();
-        delete vidcap;
-
-        vidcap = new cv::VideoCapture(num);
+        vidcap.open(num);
         camNum = num;
     }
 }
 
 bool OpenCVCameraSource::isReady()
 {
-    return vidcap->isOpened();
+    return vidcap.isOpened();
 }
 
 void OpenCVCameraSource::set(int propid, double value)
 {
-    vidcap->set(propid, value);
+    vidcap.set(propid, value);
 }
 
 cv::Mat OpenCVCameraSource::update()
 {
-    (*vidcap) >> _frame;
+    vidcap >> _frame;
     cv::flip(_frame,_frame,1);
-    cv::cvtColor(_frame,_frame,CV_BGR2RGB);
+    cv::cvtColor(_frame,_frame,cv::COLOR_BGR2RGB);
     return _frame;
 }
 

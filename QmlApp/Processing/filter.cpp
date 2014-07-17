@@ -24,7 +24,7 @@ void Filter::addColor(QRgb c)
     unsigned char* convd;
     cv::Mat conv(1,1,CV_8UC3,cv::Scalar(col.blue(),col.green(),col.red()));
 
-    cv::cvtColor(conv,conv,CV_BGR2HLS);
+    cv::cvtColor(conv,conv,cv::COLOR_BGR2HLS);
     convd = (unsigned char*)conv.data;
     h = convd[0];
     l = convd[1];
@@ -65,7 +65,7 @@ cv::Mat Filter::filter(const cv::Mat inmat)
     cv::blur(inmat,mat,cv::Size(3,3));
 
     //as HLS
-    cv::cvtColor(mat,mat,CV_RGB2HLS);
+    cv::cvtColor(mat,mat,cv::COLOR_RGB2HLS);
 
     //make bw array
     cv::Mat bw(mat.rows,mat.cols,CV_8U);

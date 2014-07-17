@@ -34,7 +34,6 @@ void HandRecThread::timerEvent(QTimerEvent *)
 
 void HandRecThread::TakeBackgroundImage()
 {
-    qDebug("INto function");
     cv::Mat frame;
     frame = cam.update();
     backgroundImage = frame.clone();
@@ -42,16 +41,27 @@ void HandRecThread::TakeBackgroundImage()
 
 void HandRecThread::process(){
     cv::Mat frame, filtered, tosend;
+    std::vector<cv::Point> contour;
+    std::vector<std::vector<cv::Point> > contours;
+
     frame = cam.update();
 
     filtered = filter.filter(frame);
 
+    contour = parser.parse(filtered);
+
+    contours.push_back(contour);
+
     switch(settings.stage()){
+    case 3:
+        tosend = frame.clone();
+        cv::drawContours(tosend,contours,0,cv::Scalar(0,255,0));
+        break;
     case 2:
         tosend = backgroundImage;
         break;
     case 1:
-        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
+        cv::cvtColor(filtered, tosend, cv::COLOR_GRAY2RGB);
         break;
     case 0:
     default:

@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include <opencv2/video/video.hpp>
+#include <opencv2/video.hpp>
 
 class Parser : public QObject
 {
@@ -11,11 +11,11 @@ class Parser : public QObject
 public:
     explicit Parser(QObject *parent = 0);
 
-    void parse(cv::Mat);
+    std::vector<cv::Point> parse(cv::Mat);
 
 private:
-    void eliminateDefects(cv::Rect bounds, std::vector<cv::Vec4i> defects);
-
+    std::vector<cv::Vec4i> filterDefects(cv::Rect bounds, std::vector<cv::Vec4i> defects, std::vector<cv::Point> contour);
+    std::vector<cv::Vec4i> filterEndpoints(cv::Rect bounds, std::vector<cv::Vec4i> defects, std::vector<cv::Point> contour);
 
 signals:
 
