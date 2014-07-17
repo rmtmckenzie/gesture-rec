@@ -38,7 +38,7 @@ private:
 
     CameraSettings settings;
 
-    cv::Mat frame;
+    cMat frame;
 
     bool keepRunning;
 

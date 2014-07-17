@@ -79,4 +79,5 @@ HEADERS += \
     Processing/camerasettings.hpp \
     Processing/handrecthread.hpp \
     Processing/handrecprivate.hpp \
-    Utils/jsonreader.hpp
+    Utils/jsonreader.hpp \
+    Processing/defines.hpp

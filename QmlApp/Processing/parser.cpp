@@ -3,17 +3,19 @@
 #include <QVector>
 #include <QLine>
 
+#include <opencv2/video/video.hpp>
+
 // ANGLETOLERANCE = 95 * PI / 180
 const float ANGLETOLERANCE = 1.658062789f;
 
-float angle(cv::Point s, cv::Point e, cv::Point f)
+float angle(cPoint s, cPoint e, cPoint f)
 {
     float a1 = atan2(s.y - f.y, s.x - f.x);
     float a2 = atan2(e.y - f.y, e.x - f.x);
     return fabs(a2 - a1);
 }
 
-int lensqrd(cv::Point s, cv::Point e)
+int lensqrd(cPoint s, cPoint e)
 {
     int xse = e.x-s.x, yse = e.y-s.y;
     return (xse*xse) + (yse*yse);
@@ -25,24 +27,22 @@ Parser::Parser(QObject *parent) :
 }
 
 
-std::vector<cv::Vec4i> Parser::filterEndpoints(cv::Rect bounds,
-                                               std::vector<cv::Vec4i> defects,
-                                               std::vector<cv::Point> contour)
+DefectArray Parser::filterEndpoints(cRect bounds, DefectArray defects, PointArray contour)
 {
     int toleranceSqrd = (bounds.width)*(bounds.width)/36;
 
     int istart,iend;
     int oistart,oiend;
 
-    cv::Point pstart,pend;
-    cv::Point opstart,opend;
+    cPoint pstart,pend;
+    cPoint opstart,opend;
 
 
     //TODO: fix this, seems a dumb way of doing it.
     // wouldn't you change the defects instead or remove
     // intermediate contour points?
-    for(int i = 0; i < defects.size(); i++){
-        for(int j = i; j < defects.size(); j++){
+    for(unsigned int i = 0; i < defects.size(); i++){
+        for(unsigned int j = i; j < defects.size(); j++){
             istart = defects[i][0];
             iend = defects[i][1];
             oistart = defects[j][0];
@@ -65,6 +65,8 @@ std::vector<cv::Vec4i> Parser::filterEndpoints(cv::Rect bounds,
         }
     }
 
+    return defects;
+
     //    Vec4i temp;
 //	float avgX, avgY;
 //	float tolerance=bRect_width/6;
@@ -85,14 +87,14 @@ std::vector<cv::Vec4i> Parser::filterEndpoints(cv::Rect bounds,
 //		}
 }
 
-std::vector<cv::Vec4i> Parser::filterDefects(cv::Rect bounds, std::vector<cv::Vec4i> defects, std::vector<cv::Point> contour)
+DefectArray Parser::filterDefects(cRect bounds, DefectArray defects, PointArray contour)
 {
     //todo: just pass in tolerance
     int toleranceSqrd = bounds.height*bounds.height/25;
 
     std::vector<cv::Vec4i> newDefects;
     int istart,iend,ifar;
-    cv::Point pstart, pend, pfar;
+    cPoint pstart, pend, pfar;
 
     for(std::vector<cv::Vec4i>::iterator i = defects.begin(),e = defects.end();
             i != e;
@@ -121,16 +123,16 @@ std::vector<cv::Vec4i> Parser::filterDefects(cv::Rect bounds, std::vector<cv::Ve
 }
 
 
-std::vector<cv::Point> Parser::parse(cv::Mat mat)
+PointArray Parser::getContour(cMat c)
 {
-    std::vector<std::vector<cv::Point> > contours;
+    std::vector<PointArray> contours;
 
-    cv::Mat contourmat = mat.clone();
+    cMat contourmat = c.clone();
     cv::findContours(contourmat, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
-    std::vector<cv::Point> largestContour(0);
+    PointArray largestContour(0);
 
-    foreach (std::vector<cv::Point> pts, contours) {
+    foreach (std::vector<cPoint> pts, contours) {
         if(pts.size() > largestContour.size()){
             largestContour = pts;
         }
@@ -138,25 +140,32 @@ std::vector<cv::Point> Parser::parse(cv::Mat mat)
 
     if(!largestContour.size()){
         //no contour found!
-        return largestContour;
+        //do something?
     }
+    return largestContour;
+}
 
-    cv::Rect bounds = cv::boundingRect(largestContour);
+DefectArray Parser::getDefects(PointArray contour){
 
-    std::vector<int> hullPointIndices(largestContour.size());
-    std::vector<cv::Point> hullPoints(largestContour.size());
-    std::vector<cv::Vec4i> defects;
 
-    cv::convexHull(largestContour,hullPoints,false);
-    cv::convexHull(largestContour,hullPointIndices,false);
+    cRect bounds = cv::boundingRect(contour);
+
+    std::vector<int> hullPointIndices(contour.size());
+    PointArray hullPoints(contour.size());
+    DefectArray defects;
+
+    cv::convexHull(contour,hullPoints,false);
+    cv::convexHull(contour,hullPointIndices,false);
 
     cv::approxPolyDP(hullPoints,hullPoints,18,true);
 
-    if(largestContour.size() > 3) {
-        cv::convexityDefects(largestContour, hullPointIndices, defects);
-        defects = filterDefects(bounds, defects, largestContour);
+    if(contour.size() > 3) {
+        cv::convexityDefects(contour, hullPointIndices, defects);
+        defects = filterDefects(bounds, defects, contour);
         //todo: eliminate extra endpoints
     }
+
+    return defects;
 
 
 //    hg->bRect=boundingRect(Mat(hg->contours[hg->cIdx]));
@@ -175,6 +184,9 @@ std::vector<cv::Point> Parser::parse(cv::Mat mat)
 //        myDrawContours(m,hg);
 //    }
 
-    return largestContour;
+}
 
+PointArray Parser::getFingertips(DefectArray defects){
+    Q_UNUSED(defects)
+    return PointArray(0);
 }
