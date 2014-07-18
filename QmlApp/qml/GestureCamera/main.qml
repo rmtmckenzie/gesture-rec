@@ -55,12 +55,13 @@ ApplicationWindow {
             height: parent.height - 20
             width: parent.width - view.width
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 10
+            spacing: 5
 
             YellowButton{
                 text: "Reset\nColours"
                 anchors{
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                     handrec.resetHandColors()
@@ -70,7 +71,8 @@ ApplicationWindow {
             GreenButton{
                 text: "Normal\nWebcam"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                     handrec.stage = 0
@@ -80,7 +82,8 @@ ApplicationWindow {
             GreenButton{
                 text: "Filtered\nFrames"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                     handrec.stage = 1
@@ -90,7 +93,8 @@ ApplicationWindow {
             GreenButton{
                 text: "Parsed\nHand"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                     handrec.stage = 2
@@ -100,7 +104,8 @@ ApplicationWindow {
             GreenButton{
                 text: "Take\nBackground"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.righter
                 }
                 onClicked: {
                     handrec.invokeTakeBackgroundImage();
@@ -110,7 +115,8 @@ ApplicationWindow {
             GreenButton{
                 text: "View\nBackground"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                    handrec.stage = 3;
@@ -120,7 +126,8 @@ ApplicationWindow {
             GreenButton{
                 text: "View\nSubtracted"
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
+                    left:parent.left
+                    right:parent.right
                 }
                 onClicked: {
                    handrec.stage = 4;

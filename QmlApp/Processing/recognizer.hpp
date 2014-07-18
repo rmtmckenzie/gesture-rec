@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "defines.hpp"
+
 class Recognizer : public QObject
 {
     Q_OBJECT
