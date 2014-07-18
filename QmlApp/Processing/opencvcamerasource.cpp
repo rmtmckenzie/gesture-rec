@@ -32,8 +32,8 @@ OpenCVCameraSource::~OpenCVCameraSource()
 
 void OpenCVCameraSource::switchCamera(int num)
 {
-    qDebug() << "Switching camera to " << num;
     if(num != camNum){
+        qDebug() << "Switching camera to " << num;
         vidcap.open(num);
         camNum = num;
     }
