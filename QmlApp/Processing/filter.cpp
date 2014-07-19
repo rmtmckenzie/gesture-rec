@@ -76,14 +76,26 @@ cMat Filter::getBackDiff(const cMat inmat)
     return diff;
 }
 
+cMat Filter::sharpen(const cMat inmat)
+{
+    cMat mat;
+    cv::GaussianBlur(inmat, mat, cv::Size(21,21), 21);
+//    cv::GaussianBlur(inmat, mat, cv::Size(5,5), 5);
+    cv::addWeighted(inmat, 1.5, mat, -0.5, 0, mat);
+    return mat;
+}
+
 cMat Filter::filter(const cMat inmat)
 {
     cMat mat;
     //TODO - downsize to ?? (320 x 240?)
     // by cv::pyrDown(in,out,cv::Size((src.cols+1)/?,(src.rows+1)/?)
 
+    //sharpen
+//    mat = sharpen(inmat);
     //blur
-    cv::blur(inmat,mat,cv::Size(3,3));
+    cv::blur(inmat,mat,cv::Size(5,5));
+
 
     //as HLS
     cv::cvtColor(mat,mat,cv::COLOR_RGB2HLS);
@@ -91,7 +103,7 @@ cMat Filter::filter(const cMat inmat)
     //make bw array
     cMat bw(mat.rows,mat.cols,CV_8U);
 
-    //figure out what scalar and scalar are supposed to be
+    //DO SOMETHING SMARTER HERE
     cv::inRange(mat,lowColor,highColor,bw);
 
     cv::medianBlur(bw,bw,5);

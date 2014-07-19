@@ -11,25 +11,27 @@ class Parser : public QObject
 public:
     explicit Parser(QObject *parent = 0);
 
-    PointArray parse(cMat c);
+    void parse(cMat c);
 
     PointArray getContour(cMat c);
 
     DefectArray getDefects(PointArray contour);
     PointArray getFingertips(DefectArray defects, PointArray contour);
+    PointArray getFingerInners(DefectArray defects, PointArray contour);
     DefectArray filterDefects(cRect bounds, DefectArray defects, PointArray contour);
     DefectArray filterEndpoints(cRect bounds, DefectArray defects, PointArray contour);
     
     cRect getBounds(PointArray contour);
     PointArray getSingleFingertip(DefectArray defects, PointArray contour);
 
-    void drawFingertips(cMat c);
+    void drawFingerPoints(cMat c);
     void drawContour(cMat c);
     void drawHand(cMat c);
 private:
     PointArray contour;
     DefectArray defects;
     PointArray fingers;
+    PointArray inners;
     cRect bounds;
 
 signals:
