@@ -30,7 +30,7 @@ void HandRecPrivate::setupConnections()
     connect(this, &HandRecPrivate::_resetHandColors, s, &CameraSettings::resetHandColors);
     connect(this, &HandRecPrivate::_addHandColor, s, &CameraSettings::addHandColor);
     connect(this, &HandRecPrivate::_setStage, s, &CameraSettings::frameStage);
-    connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage);
+    connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage,Qt::QueuedConnection);
 }
 
 void HandRecPrivate::resetHandColors()

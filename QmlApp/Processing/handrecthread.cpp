@@ -39,13 +39,12 @@ void HandRecThread::TakeBackgroundImage()
 
 void HandRecThread::process(){
     cMat filtered, tosend;
-    std::vector<cv::Point> contour;
 
     frame = cam.update();
 
     filtered = filter.filter(frame);
 
-    contour = parser.parse(filtered);
+    parser.parse(filtered);
 
     switch(settings.stage()){
     case 4:
@@ -61,7 +60,8 @@ void HandRecThread::process(){
         parser.drawHand(tosend);
         break;
     case 1:
-        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
+//        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
+        tosend = filter.sharpen(frame);
         break;
     case 0:
     default:

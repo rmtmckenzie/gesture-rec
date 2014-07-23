@@ -24,6 +24,7 @@ public:
 
     void printColors();
 
+    cMat sharpen(const cMat inmat);
 private:
     unsigned char lh,ll,ls, hh,hl,hs;
     cColor lowColor;

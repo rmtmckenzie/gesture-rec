@@ -5,16 +5,25 @@
 
 #include <QDebug>
 
+#include <qmath.h>
+
 #include <opencv2/video/video.hpp>
 
 // ANGLETOLERANCE = 95 * PI / 180
-const float ANGLETOLERANCE = 1.658062789f;
+//const float ANGLETOLERANCE = 1.658062789f;
+const float ANGLETOLERANCE = 3.14159f;
 
 float angle(cPoint s, cPoint e, cPoint f)
 {
     float a1 = atan2(s.y - f.y, s.x - f.x);
     float a2 = atan2(e.y - f.y, e.x - f.x);
-    return fabs(a2 - a1);
+    float t = fabs(a2 - a1);
+    if(t > M_PI)
+        return t - M_PI;
+    else if(t > M_PI_2)
+        return M_PI - t;
+    else
+        return t;
 }
 
 int lensqrd(cPoint s, cPoint e)
@@ -28,16 +37,23 @@ Parser::Parser(QObject *parent) :
 {
 }
 
-PointArray Parser::parse(cMat c)
+void Parser::parse(cMat c)
 {
     contour = getContour(c);
+    if(!contour.size()){
+        defects.clear();
+        fingers.clear();
+        inners.clear();
+        return;
+    }
     defects = getDefects(contour);
     bounds = getBounds(contour);
     defects = filterDefects(bounds,defects,contour);
-    defects = filterEndpoints(bounds,defects,contour);
+//    defects = filterEndpoints(bounds,defects,contour);
 
     if(defects.size()){
         fingers = getFingertips(defects, contour);
+        inners = getFingerInners(defects,contour);
     } else {
         //find one finger
         fingers = getSingleFingertip(defects, contour);
@@ -90,7 +106,7 @@ DefectArray Parser::filterEndpoints(cRect bounds, DefectArray defects, PointArra
 DefectArray Parser::filterDefects(cRect bounds, DefectArray defects, PointArray contour)
 {
     //todo: just pass in tolerance
-//    int toleranceSqrd = bounds.height*bounds.height/25;
+    int toleranceSqrd = bounds.height*bounds.height/49;
     int tolerance = bounds.height/25;
 
     std::vector<cv::Vec4i> newDefects;
@@ -112,12 +128,12 @@ DefectArray Parser::filterDefects(cRect bounds, DefectArray defects, PointArray 
         pfar = contour[ifar];
 
         if(
-//                pend.y < (bounds.y + bounds.height - bounds.height/4)
-//                && pstart.y < (bounds.y + bounds.height - bounds.height/4)
-//                lensqrd(pfar,pstart) > toleranceSqrd
-//                && lensqrd(pfar,pend) > toleranceSqrd
-                depth > tolerance
-                && angle(pstart, pend, pfar) < ANGLETOLERANCE) {
+                1
+//                && depth > tolerance
+                && lensqrd(pfar,pstart) > toleranceSqrd
+                && lensqrd(pfar,pend) > toleranceSqrd
+//                && angle(pstart, pend, pfar) < ANGLETOLERANCE
+                ){
             newDefects.push_back(v);
         }
     }
@@ -150,6 +166,9 @@ PointArray Parser::getContour(cMat c)
 
 cRect Parser::getBounds(PointArray contour)
 {
+    if(!contour.size()){
+        return cRect();
+    }
     return cv::boundingRect(contour);
 }
 
@@ -170,21 +189,20 @@ DefectArray Parser::getDefects(PointArray contour)
     //
     //
 
+    DefectArray defects;
 
-    cRect bounds = cv::boundingRect(contour);
+    cRect bounds = getBounds(contour);
 
     std::vector<int> hullPointIndices(contour.size());
     PointArray hullPoints(contour.size());
-    DefectArray defects;
 
     cv::convexHull(contour,hullPoints,false);
     cv::convexHull(contour,hullPointIndices,false);
 
     cv::approxPolyDP(hullPoints,hullPoints,18,true);
 
-    if(contour.size() > 3) {
+    if(hullPoints.size() > 2) {
         cv::convexityDefects(contour, hullPointIndices, defects);
-        defects = filterDefects(bounds, defects, contour);
         //todo: eliminate extra endpoints
     }
 
@@ -192,7 +210,24 @@ DefectArray Parser::getDefects(PointArray contour)
 
 }
 
-PointArray Parser::getFingertips(DefectArray defects, PointArray contour) {
+PointArray Parser::getFingerInners(DefectArray defects, PointArray contour)
+{
+    PointArray points(0);
+
+    if(!defects.size()) {
+        return points;
+    }
+
+    for(DefectArIter d = defects.begin(), e = defects.end(); d != e; d++){
+        points.push_back(contour[(*d)[2]]);
+    }
+
+    return points;
+
+}
+
+PointArray Parser::getFingertips(DefectArray defects, PointArray contour)
+{
     PointArray points(0);
 
     if(!defects.size()) {
@@ -202,8 +237,7 @@ PointArray Parser::getFingertips(DefectArray defects, PointArray contour) {
     //add start (first finger)
     points.push_back(contour[defects[0][0]]);
 
-    for(DefectArIter d = defects.begin(), e = defects.end();
-            d != e; d++){
+    for(DefectArIter d = defects.begin(), e = defects.end(); d != e; d++){
         //add end (next finger)
         points.push_back(contour[(*d)[1]]);
     }
@@ -220,10 +254,21 @@ PointArray Parser::getSingleFingertip(DefectArray defects, PointArray contour)
     return PointArray();
 }
 
-void Parser::drawFingertips(cMat c)
+void Parser::drawFingerPoints(cMat c)
 {
     for(PointArIter s = fingers.begin(), e = fingers.end(); s != e; s++){
         cv::circle(c,*s,10,cColor(255,0,0),2);
+    }
+//    for(PointArIter s = inners.begin(), e = inners.end(); s != e; s++){
+//        cv::circle(c,*s,10,cColor(0,255,255),2);
+//    }
+
+    for(DefectArIter s = defects.begin(), e = defects.end(); s != e; s++) {
+        cPoint pfar = contour[(*s)[2]];
+
+        float f = angle(contour[(*s)[0]], contour[(*s)[1]], pfar)*180/3.14159;
+
+        cv::putText(c,QString::number(f).toStdString(),pfar,cv::FONT_HERSHEY_PLAIN,1.2f,cv::Scalar(200,0,0),2);
     }
 }
 
@@ -237,7 +282,7 @@ void Parser::drawContour(cMat c)
 void Parser::drawHand(cMat c)
 {
     drawContour(c);
-    drawFingertips(c);
+    drawFingerPoints(c);
     cv::Scalar fingerMiddle = cv::mean(fingers);
     cPoint center, diff, handCenter;
 

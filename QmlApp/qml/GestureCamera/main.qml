@@ -24,6 +24,7 @@ ApplicationWindow {
 
     Row{
         anchors.fill: parent
+        spacing: 2
         CameraView{
             id: view
 
@@ -53,7 +54,7 @@ ApplicationWindow {
 
         Column{
             height: parent.height - 20
-            width: parent.width - view.width
+            width: parent.width - view.width - 4
             anchors.verticalCenter: parent.verticalCenter
             spacing: 5
 
@@ -69,68 +70,99 @@ ApplicationWindow {
             }
 
             GreenButton{
-                text: "Normal\nWebcam"
-                anchors {
-                    left:parent.left
-                    right:parent.right
-                }
-                onClicked: {
-                    handrec.stage = 0
-                }
-            }
-
-            GreenButton{
-                text: "Filtered\nFrames"
-                anchors {
-                    left:parent.left
-                    right:parent.right
-                }
-                onClicked: {
-                    handrec.stage = 1
-                }
-            }
-
-            GreenButton{
-                text: "Parsed\nHand"
-                anchors {
-                    left:parent.left
-                    right:parent.right
-                }
-                onClicked: {
-                    handrec.stage = 2
-                }
-            }
-
-            GreenButton{
                 text: "Take\nBackground"
                 anchors {
                     left:parent.left
-                    right:parent.righter
+                    right:parent.right
                 }
                 onClicked: {
                     handrec.invokeTakeBackgroundImage();
                 }
             }
 
-            GreenButton{
-                text: "View\nBackground"
-                anchors {
+            Column{
+                anchors{
                     left:parent.left
                     right:parent.right
                 }
-                onClicked: {
-                   handrec.stage = 3;
-                }
-            }
+                spacing: 1
 
-            GreenButton{
-                text: "View\nSubtracted"
-                anchors {
-                    left:parent.left
-                    right:parent.right
+                ExclusiveGroup{
+                    id:views;
                 }
-                onClicked: {
-                   handrec.stage = 4;
+
+                Text{
+                    text: "Views:"
+                    anchors{
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                GreenButton{
+                    text: "Normal\nWebcam"
+                    anchors {
+                        left:parent.left
+                        right:parent.right
+                    }
+                    checked: true
+                    checkable: true
+                    exclusiveGroup: views;
+                    onClicked: {
+    //                    checked = true
+                        handrec.stage = 0
+                    }
+                }
+
+                GreenButton{
+                    text: "Filtered\nFrames"
+                    anchors {
+                        left:parent.left
+                        right:parent.right
+                    }
+                    exclusiveGroup: views
+                    checkable: true
+                    onClicked: {
+                        handrec.stage = 1
+                    }
+                }
+
+                GreenButton{
+                    text: "Parsed\nHand"
+                    anchors {
+                        left:parent.left
+                        right:parent.right
+                    }
+                    exclusiveGroup: views
+                    checkable: true
+                    onClicked: {
+                        handrec.stage = 2
+                    }
+                }
+
+                GreenButton{
+                    text: "View\nBackground"
+                    anchors {
+                        left:parent.left
+                        right:parent.right
+                    }
+                    exclusiveGroup: views
+                    checkable: true
+                    onClicked: {
+                       handrec.stage = 3;
+                    }
+                }
+
+                GreenButton{
+                    text: "View\nSubtracted"
+                    anchors {
+                        left:parent.left
+                        right:parent.right
+                    }
+                    exclusiveGroup: views
+                    checkable: true
+                    onClicked: {
+                       handrec.stage = 4;
+                    }
                 }
             }
         }

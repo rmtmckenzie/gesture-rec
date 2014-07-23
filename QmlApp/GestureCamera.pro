@@ -8,6 +8,8 @@ QML_IMPORT_PATH =
 
 QT += multimedia
 
+QMAKE_CXXFLAGS += -Os
+
 win32 | win64 {
 
     #For this to work on windows, must define OPENCV_DIR.
