@@ -38,6 +38,10 @@ private:
 signals:
     void _swipeRight();
     void _swipeLeft();
+    void _panLeft();
+    void _panRight();
+    void _rotateLeft();
+    void _rotateRight();
 
 public slots:
 

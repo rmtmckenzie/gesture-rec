@@ -33,6 +33,12 @@ public:
 //////////////////////// REGULAR API /////////////////////////
 signals:
     void frameUpdate(QVideoFrame frame);
+    void swipeRight();
+    void swipeLeft();
+    void panRight();
+    void panLeft();
+    void rotateRight();
+    void rotateLeft();
 
 public:
     void addHandColor(QRgb colour);
@@ -52,6 +58,13 @@ private:
 
 private slots:
     void receiveFrame(QVideoFrame frame);
+    void swipeRightDetected();
+    void swipeLeftDetected();
+    void panRightDetected();
+    void panLeftDetected();
+    void rotateRightDetected();
+    void rotateLeftDetected();
+
 
 ////////////////////// PROPERTY STUFF ///////////////////////
 public:
@@ -60,7 +73,6 @@ public:
         unsigned int stage() const;
 
         void setExposure(double a, double e);
-        void OutputRotation();
         QColor lowColor();
         QColor highColor();
         float exposure() const;
@@ -78,6 +90,7 @@ signals:
         void lowColorChanged(QColor c);
         void highColorChanged(QColor c);
         void exposureChanged(float arg);
+        void SwipeLeft();
 
 private:
         bool m_running;

@@ -105,7 +105,7 @@ int Recognizer::recognize(PARSED frameValues)
                     && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 20)
             {
                 //ROTATE LEFT
-                qDebug() << "ROTATE LEFT";
+                emit _rotateLeft();
                 returnValue = 4;
                 recognizerState = 0;
             }
@@ -113,7 +113,7 @@ int Recognizer::recognize(PARSED frameValues)
                     && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 20)
             {
                 //ROTATE RIGHT
-                qDebug() << "ROTATE RIGHT";
+                emit _rotateRight();
                 returnValue = 5;
                 recognizerState = 0;
             }
@@ -122,7 +122,7 @@ int Recognizer::recognize(PARSED frameValues)
             if(InitialXMean > (fMean.first + 70) && buffer[bufferCurrent].handCenter.x + 70 < buffer[begin].handCenter.x )
             {
                 //PAN LEFT
-                qDebug() << "PAN Left";
+                emit _panLeft();
                 returnValue = 4;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 recognizerState = 0;
@@ -130,7 +130,7 @@ int Recognizer::recognize(PARSED frameValues)
             else if((InitialXMean + 70) < fMean.first && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x + 70)
             {
                 //PAN RIGHT
-                qDebug() << "PAN RIGHT";
+                emit _panRight();
                 returnValue = 5;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 recognizerState = 0;
@@ -139,13 +139,13 @@ int Recognizer::recognize(PARSED frameValues)
 //            else if((InitialYMean + 50) < fMean.second && buffer[bufferCurrent].handCenter.y > buffer[begin].handCenter.y + 70)
 //            {
 //                //PAN DOWN
-//                qDebug() << "PAN DOwN";
+//                emit _panDown();
 //                recognizerState = 0;
 //            }
 //            else if((InitialYMean + 50) < fMean.second && buffer[bufferCurrent].handCenter.y > buffer[begin].handCenter.y + 50)
 //            {
 //                //PAN UP
-//                qDebug() << "PAN UPPP";
+//                emit _panUp();
 //                recognizerState = 0;
 //            }
         //}
@@ -182,8 +182,7 @@ int Recognizer::recognize(PARSED frameValues)
                 && mean < 250){
             recognizerState = 1;
             waitFrame = (bufferCurrent + 15) % BUFFERSIZE;
-
-            qDebug("Swipe Left Detected.");
+            emit _swipeLeft();
             break;
         }
 
@@ -192,9 +191,7 @@ int Recognizer::recognize(PARSED frameValues)
                 && mean > 70){
             recognizerState = 2;
             waitFrame = (bufferCurrent + 15) % BUFFERSIZE;
-
-            qDebug("Swipe Right Detected.");
-
+            emit _swipeRight();
             break;
         }
 

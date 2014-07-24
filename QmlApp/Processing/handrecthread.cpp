@@ -37,11 +37,6 @@ void HandRecThread::TakeBackgroundImage()
     filter.setBackground(frame);
 }
 
-void HandRecThread::OutputRotation()
-{
-    parser.OutputText = "Left";
-}
-
 void HandRecThread::process(){
     cMat filtered, tosend;
     PARSED parsed;
