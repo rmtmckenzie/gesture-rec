@@ -24,13 +24,16 @@ public:
 
 private:
     int GetHandPositionMean(int frameNumber, int begin);
-    std::pair<int,int> GetFingersMean(int frameNumber);
+    std::pair<int,int> GetFingersMean(int frameNumber, int begin);
+    int RotationSaveFingers();
 
     PARSED buffer[BUFFERSIZE];
     int bufferCurrent = 0;
 
     int recognizerState = 0;
     int waitFrame = 0;
+    int InitialXMean = 0;
+    int InitialYMean = 0;
 
 signals:
 
