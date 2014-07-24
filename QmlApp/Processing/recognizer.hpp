@@ -34,6 +34,7 @@ private:
     int waitFrame = 0;
     int InitialXMean = 0;
     int InitialYMean = 0;
+    int InitialThumb = 0;
 
 signals:
     void _swipeRight();

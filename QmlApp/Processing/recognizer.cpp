@@ -40,7 +40,6 @@ std::pair<int,int> Recognizer::GetFingersMean(int frameNumber, int begin)
                 fingersYMean += (*s).y;
                 fingersXMean += (*s).x;
             }
-
             fingersXMean = fingersXMean / buffer[frameNumber].fingers.size();
             fingersYMean = fingersYMean / buffer[frameNumber].fingers.size();
 //        }
@@ -72,6 +71,8 @@ int Recognizer::RotationSaveFingers()
 
         InitialXMean = InitialXMean / buffer[bufferCurrent].fingers.size();
         InitialYMean = InitialYMean / buffer[bufferCurrent].fingers.size();
+
+        InitialThumb = buffer[bufferCurrent].fingers[0].y;
     }
     else
     {
@@ -95,32 +96,48 @@ int Recognizer::recognize(PARSED frameValues)
     //int xMean = 0;
 
     switch (recognizerState)
-    {
+    {     
     case 3:
-        //ROTATION
-        //Find hand orientation
 //        if (waitFrame == bufferCurrent) {
             returnValue = 3;
             fMean = GetFingersMean(bufferCurrent, begin);
-            //Hand is pointed up
-            if(InitialXMean > (fMean.first + 50))
-            {
 
-//                qDebug() << "Up Rotate Left";
-//                qDebug() << "Current frame: " << bufferCurrent;
-                returnValue = 4;
-                //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                recognizerState = 0;
+            //ROTATION
+            if (buffer[bufferCurrent].fingers.size()){
+                if(InitialXMean > (fMean.first + 50) &&
+                        buffer[bufferCurrent].fingers[0].y > InitialThumb + 35)
+                {
+                    //ROTATE LEFT
+                    returnValue = 4;
+                    recognizerState = 0;
+                }
+                else if((InitialXMean + 50) < fMean.first &&
+                        buffer[bufferCurrent].fingers[0].y + 35 < InitialThumb)
+                {
+                    //ROTATE RIGHT
+                    returnValue = 5;
+                    recognizerState = 0;
+                }
             }
-            else if((InitialXMean + 50) < fMean.first)
-            {
+            //PAN
+//            if(InitialXMean > (fMean.first + 50))
+//            {
 
-//                qDebug() << "Up Rotate Right";
-//                qDebug() << "Current frame: " << bufferCurrent;
-                returnValue = 5;
-                //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                recognizerState = 0;
-            }
+////                qDebug() << "Up Rotate Left";
+////                qDebug() << "Current frame: " << bufferCurrent;
+//                returnValue = 4;
+//                //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
+//                recognizerState = 0;
+//            }
+//            else if((InitialXMean + 50) < fMean.first)
+//            {
+
+////                qDebug() << "Up Rotate Right";
+////                qDebug() << "Current frame: " << bufferCurrent;
+//                returnValue = 5;
+//                //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
+//                recognizerState = 0;
+//            }
         //}
 
         break;
