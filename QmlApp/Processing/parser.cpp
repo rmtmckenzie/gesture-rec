@@ -37,14 +37,16 @@ Parser::Parser(QObject *parent) :
 {
 }
 
-void Parser::parse(cMat c)
+PARSED Parser::parse(cMat c)
 {
+    PARSED parserValues;
+
     contour = getContour(c);
     if(!contour.size()){
         defects.clear();
         fingers.clear();
         inners.clear();
-        return;
+        return parserValues;
     }
     defects = getDefects(contour);
     bounds = getBounds(contour);
@@ -58,6 +60,23 @@ void Parser::parse(cMat c)
         //find one finger
         fingers = getSingleFingertip(defects, contour);
     }
+
+    //Placeholder for determining hand center
+    cPoint center, diff, handCenter;
+
+    cv::Scalar fingerMiddle = cv::mean(fingers);
+    center = cPoint(bounds.x + (bounds.width >> 1),bounds.y + (bounds.height >> 1));
+    diff = cPoint(fingerMiddle[0], fingerMiddle[1]) - center;
+    handCenter = center - cPoint(diff.x >> 1, diff.y >> 1);
+
+    parserValues.contour = contour;
+    parserValues.defects = defects;
+    parserValues.fingers = fingers;
+    parserValues.bounds = bounds;
+    parserValues.inners = inners;
+    parserValues.handCenter = handCenter;
+
+    return parserValues;
 }
 
 
@@ -132,7 +151,7 @@ DefectArray Parser::filterDefects(cRect bounds, DefectArray defects, PointArray 
 //                && depth > tolerance
                 && lensqrd(pfar,pstart) > toleranceSqrd
                 && lensqrd(pfar,pend) > toleranceSqrd
-//                && angle(pstart, pend, pfar) < ANGLETOLERANCE
+                && angle(pstart, pend, pfar) < ANGLETOLERANCE
                 ){
             newDefects.push_back(v);
         }
@@ -258,18 +277,20 @@ void Parser::drawFingerPoints(cMat c)
 {
     for(PointArIter s = fingers.begin(), e = fingers.end(); s != e; s++){
         cv::circle(c,*s,10,cColor(255,0,0),2);
+//        cv::putText(c,QString::number((*s).x).toStdString() + "," + QString::number((*s).y).toStdString(),
+//                    *s, cv::FONT_HERSHEY_PLAIN, 1.2f, cv::Scalar(200,0,0),2);
     }
-//    for(PointArIter s = inners.begin(), e = inners.end(); s != e; s++){
-//        cv::circle(c,*s,10,cColor(0,255,255),2);
+    for(PointArIter s = inners.begin(), e = inners.end(); s != e; s++){
+        cv::circle(c,*s,10,cColor(0,255,255),2);
+    }
+
+//    for(DefectArIter s = defects.begin(), e = defects.end(); s != e; s++) {
+//        cPoint pfar = contour[(*s)[2]];
+
+//        float f = angle(contour[(*s)[0]], contour[(*s)[1]], pfar)*180/3.14159;
+
+//        cv::putText(c,QString::number(f).toStdString(),pfar,cv::FONT_HERSHEY_PLAIN,1.2f,cv::Scalar(200,0,0),2);
 //    }
-
-    for(DefectArIter s = defects.begin(), e = defects.end(); s != e; s++) {
-        cPoint pfar = contour[(*s)[2]];
-
-        float f = angle(contour[(*s)[0]], contour[(*s)[1]], pfar)*180/3.14159;
-
-        cv::putText(c,QString::number(f).toStdString(),pfar,cv::FONT_HERSHEY_PLAIN,1.2f,cv::Scalar(200,0,0),2);
-    }
 }
 
 void Parser::drawContour(cMat c)
