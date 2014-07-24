@@ -29,6 +29,8 @@ public:
     void drawContour(cMat c);
     void drawHand(cMat c);
 
+    std::string OutputText = "Rotation";
+
 private:
     PointArray contour;
     DefectArray defects;

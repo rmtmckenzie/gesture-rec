@@ -28,8 +28,8 @@ QColor CameraView::getColor(int x, int y)
     int yt = y*(curframe.height()/height());
     curframe.map(QAbstractVideoBuffer::ReadOnly);
     QImage im(
-                curframe.bits(), curframe.width(), curframe.height(),
-                curframe.bytesPerLine(), m_format);
+        curframe.bits(), curframe.width(), curframe.height(),
+        curframe.bytesPerLine(), m_format);
     QColor toret(im.pixel(xt,yt));
     im.setPixel(xt,yt,qRgb(255,0,0));
     curframe.unmap();

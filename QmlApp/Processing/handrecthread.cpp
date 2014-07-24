@@ -37,9 +37,15 @@ void HandRecThread::TakeBackgroundImage()
     filter.setBackground(frame);
 }
 
+void HandRecThread::OutputRotation()
+{
+    parser.OutputText = "Left";
+}
+
 void HandRecThread::process(){
     cMat filtered, tosend;
     PARSED parsed;
+    int action = 0;
 
     frame = cam.update();
 
@@ -58,10 +64,15 @@ void HandRecThread::process(){
         break;
     case 2:
         //Draw Hand
+        action = recognizer.recognize(parsed);
+        if (action == 0) parser.OutputText = "No Gesture";
+        if (action == 1) parser.OutputText = "Swipe Left";
+        if (action == 2) parser.OutputText = "Swipe Right";
+        if (action == 3) parser.OutputText = "Rotation";
+        if (action == 4) parser.OutputText = "Rotation Left";
+        if (action == 5) parser.OutputText = "Rotation Right";
         tosend = frame.clone();
-        parser.drawHand(tosend);
-
-        recognizer.recognize(parsed);
+        parser.drawHand(tosend);       
         break;
     case 1:
         cv::cvtColor(filtered,tosend,CV_GRAY2RGB);

@@ -31,6 +31,8 @@ void HandRecPrivate::setupConnections()
     connect(this, &HandRecPrivate::_addHandColor, s, &CameraSettings::addHandColor);
     connect(this, &HandRecPrivate::_setStage, s, &CameraSettings::frameStage);
     connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage,Qt::QueuedConnection);
+
+    //connect(this, &Recognizer::_swipeRight, handrec->recognizer, &HandRecThread::OutputRotation);
 }
 
 void HandRecPrivate::resetHandColors()
@@ -61,4 +63,9 @@ void HandRecPrivate::setExposure(double a, double e)
 void HandRecPrivate::TakeBackgroundImage()
 {
     emit _takeBackgroundImage();
+}
+
+void HandRecPrivate::OutputRotation()
+{
+    api->OutputRotation();
 }

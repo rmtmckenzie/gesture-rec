@@ -25,6 +25,7 @@ public:
 
     void TakeBackgroundImage();
     void ReturnBackgroundImage();
+    void OutputRotation();
 
 private:
     QThread runnerThread;

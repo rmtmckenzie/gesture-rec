@@ -128,3 +128,8 @@ void HandRecAPI::setExposure(double a, double e)
 {
     priv.setExposure(a,e);
 }
+
+void HandRecAPI::OutputRotation()
+{
+//    parent->rootObject->setProperty("RotationText", QVariant("Left"));
+}

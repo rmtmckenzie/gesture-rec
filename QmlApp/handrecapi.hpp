@@ -60,6 +60,7 @@ public:
         unsigned int stage() const;
 
         void setExposure(double a, double e);
+        void OutputRotation();
         QColor lowColor();
         QColor highColor();
         float exposure() const;

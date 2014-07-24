@@ -29,6 +29,7 @@ public:
     void stop();
 
     void TakeBackgroundImage();
+    void OutputRotation();
 
 private:
     OpenCVCameraSource cam;
