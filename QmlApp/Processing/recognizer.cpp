@@ -99,8 +99,8 @@ int Recognizer::recognize(PARSED frameValues)
     case 3:
         //ROTATION
         //Find hand orientation
-        //if (waitFrame == bufferCurrent) {
-
+//        if (waitFrame == bufferCurrent) {
+            returnValue = 3;
             fMean = GetFingersMean(bufferCurrent, begin);
             //Hand is pointed up
             if(InitialXMean > (fMean.first + 50))
@@ -108,18 +108,18 @@ int Recognizer::recognize(PARSED frameValues)
 
 //                qDebug() << "Up Rotate Left";
 //                qDebug() << "Current frame: " << bufferCurrent;
-                returnValue = 1;
+                returnValue = 4;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                //recognizerState = 0;
+                recognizerState = 0;
             }
             else if((InitialXMean + 50) < fMean.first)
             {
 
 //                qDebug() << "Up Rotate Right";
 //                qDebug() << "Current frame: " << bufferCurrent;
-                returnValue = 2;
+                returnValue = 5;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                //recognizerState = 0;
+                recognizerState = 0;
             }
         //}
 
@@ -127,7 +127,7 @@ int Recognizer::recognize(PARSED frameValues)
     case 2:
         //IN RIGHT SWIPE
         if(bufferCurrent == waitFrame) recognizerState = 0;
-
+        returnValue = 2;
         if (buffer[begin].handCenter.x > 120 && buffer[begin].handCenter.x < 200
                 && mean < 180 && mean > 140){
 
@@ -138,6 +138,7 @@ int Recognizer::recognize(PARSED frameValues)
     case 1:
         //IN LEFT SWIPE
         if(bufferCurrent == waitFrame) recognizerState = 0;
+        returnValue = 1;
 
         if (buffer[begin].handCenter.x > 120 && buffer[begin].handCenter.x < 200
                 && mean < 180 && mean > 140){
