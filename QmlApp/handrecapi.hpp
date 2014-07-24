@@ -90,7 +90,6 @@ signals:
         void lowColorChanged(QColor c);
         void highColorChanged(QColor c);
         void exposureChanged(float arg);
-        void SwipeLeft();
 
 private:
         bool m_running;
