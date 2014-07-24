@@ -119,6 +119,37 @@ void HandRecAPI::receiveFrame(QVideoFrame frame)
     emit frameUpdate(frame);
 }
 
+void HandRecAPI::swipeRightDetected()
+{
+    qDebug("Swipe Right Signal Sent");
+    emit swipeRight();
+}
+
+void HandRecAPI::swipeLeftDetected()
+{
+    emit swipeLeft();
+}
+
+void HandRecAPI::panRightDetected()
+{
+    emit panRight();
+}
+
+void HandRecAPI::panLeftDetected()
+{
+    emit panLeft();
+}
+
+void HandRecAPI::rotateRightDetected()
+{
+    emit rotateRight();
+}
+
+void HandRecAPI::rotateLeftDetected()
+{
+    emit rotateLeft();
+}
+
 void HandRecAPI::invokeTakeBackgroundImage()
 {
     priv.TakeBackgroundImage();
@@ -127,9 +158,4 @@ void HandRecAPI::invokeTakeBackgroundImage()
 void HandRecAPI::setExposure(double a, double e)
 {
     priv.setExposure(a,e);
-}
-
-void HandRecAPI::OutputRotation()
-{
-//    parent->rootObject->setProperty("RotationText", QVariant("Left"));
 }
