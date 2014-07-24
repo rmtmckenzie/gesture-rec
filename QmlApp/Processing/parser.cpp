@@ -277,8 +277,8 @@ void Parser::drawFingerPoints(cMat c)
 {
     for(PointArIter s = fingers.begin(), e = fingers.end(); s != e; s++){
         cv::circle(c,*s,10,cColor(255,0,0),2);
-//        cv::putText(c,QString::number((*s).x).toStdString() + "," + QString::number((*s).y).toStdString(),
-//                    *s, cv::FONT_HERSHEY_PLAIN, 1.2f, cv::Scalar(200,0,0),2);
+        cv::putText(c,QString::number((*s).x).toStdString() + "," + QString::number((*s).y).toStdString(),
+                    *s, cv::FONT_HERSHEY_PLAIN, 1.2f, cv::Scalar(200,0,0),2);
     }
     for(PointArIter s = inners.begin(), e = inners.end(); s != e; s++){
         cv::circle(c,*s,10,cColor(0,255,255),2);

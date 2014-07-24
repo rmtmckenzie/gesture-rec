@@ -23,10 +23,14 @@ public:
     void recognize(PARSED frameValues);
 
 private:
+    int GetHandPositionMean(int frameNumber, int begin);
+    std::pair<int,int> GetFingersMean(int frameNumber);
+
     PARSED buffer[BUFFERSIZE];
     int bufferCurrent = 0;
 
     int recognizerState = 0;
+    int waitFrame = 0;
 
 signals:
 
