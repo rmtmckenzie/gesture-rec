@@ -13,4 +13,14 @@ typedef cv::Rect cRect;
 typedef DefectArray::iterator DefectArIter;
 typedef PointArray::iterator PointArIter;
 
+
+struct PARSED {
+    PointArray contour;
+    DefectArray defects;
+    PointArray fingers;
+    PointArray inners;
+    cRect bounds;
+    cPoint handCenter;
+};
+
 #endif // DEFINES_HPP

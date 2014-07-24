@@ -39,12 +39,13 @@ void HandRecThread::TakeBackgroundImage()
 
 void HandRecThread::process(){
     cMat filtered, tosend;
+    PARSED parsed;
 
     frame = cam.update();
 
     filtered = filter.filter(frame);
 
-    parser.parse(filtered);
+    parsed = parser.parse(filtered);
 
     switch(settings.stage()){
     case 4:
@@ -56,12 +57,15 @@ void HandRecThread::process(){
         tosend = filter.getBackground();
         break;
     case 2:
+        //Draw Hand
         tosend = frame.clone();
         parser.drawHand(tosend);
+
+        recognizer.recognize(parsed);
         break;
     case 1:
-//        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
-        tosend = filter.sharpen(frame);
+        cv::cvtColor(filtered,tosend,CV_GRAY2RGB);
+//        tosend = filter.sharpen(frame);
         break;
     case 0:
     default:

@@ -8,10 +8,11 @@
 class Parser : public QObject
 {
     Q_OBJECT
+
 public:
     explicit Parser(QObject *parent = 0);
 
-    void parse(cMat c);
+    PARSED parse(cMat c);
 
     PointArray getContour(cMat c);
 
@@ -27,6 +28,7 @@ public:
     void drawFingerPoints(cMat c);
     void drawContour(cMat c);
     void drawHand(cMat c);
+
 private:
     PointArray contour;
     DefectArray defects;
