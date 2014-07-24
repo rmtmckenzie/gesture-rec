@@ -83,15 +83,16 @@ int Recognizer::RotationSaveFingers()
 
 int Recognizer::recognize(PARSED frameValues)
 {
+    int returnValue = 0;
     int begin = bufferCurrent - LOOKUPSIZE;
     if (begin < 0) begin+=BUFFERSIZE;
     int mean = GetHandPositionMean(bufferCurrent, begin);
 
     //load into buffer
     buffer[bufferCurrent] = frameValues;
-    bufferCurrent = (bufferCurrent + 1) % BUFFERSIZE;
 
     std::pair<int,int> fMean;
+    //int xMean = 0;
 
     switch (recognizerState)
     {
@@ -102,21 +103,21 @@ int Recognizer::recognize(PARSED frameValues)
 
             fMean = GetFingersMean(bufferCurrent, begin);
             //Hand is pointed up
-            if(InitialXMean > fMean.first + 50)
+            if(InitialXMean > (fMean.first + 50))
             {
 
-                qDebug() << "Up Rotate Left";
-                qDebug() << "Current frame: " << bufferCurrent;
-                return 1;
+//                qDebug() << "Up Rotate Left";
+//                qDebug() << "Current frame: " << bufferCurrent;
+                returnValue = 1;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 //recognizerState = 0;
             }
-            else if(InitialXMean + 50 < fMean.first)
+            else if((InitialXMean + 50) < fMean.first)
             {
 
-                qDebug() << "Up Rotate Right";
-                qDebug() << "Current frame: " << bufferCurrent;
-                return 2;
+//                qDebug() << "Up Rotate Right";
+//                qDebug() << "Current frame: " << bufferCurrent;
+                returnValue = 2;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 //recognizerState = 0;
             }
@@ -179,4 +180,11 @@ int Recognizer::recognize(PARSED frameValues)
         break;
 
     }
+
+    //Increment buffer counter
+    bufferCurrent = (bufferCurrent + 1) % BUFFERSIZE;
+
+    //Return
+    return returnValue;
+
 }
