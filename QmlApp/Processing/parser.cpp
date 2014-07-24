@@ -314,4 +314,9 @@ void Parser::drawHand(cMat c)
 
     cv::circle(c,handCenter,10,cColor(0,0,255),2);
     cv::line(c,handCenter,center,cColor(0,0,255));
+
+    cPoint TopLeft = {10,10};
+    cv::putText(c, OutputText, TopLeft, cv::FONT_HERSHEY_PLAIN, 1.2f, cv::Scalar(255,0,0),2);
 }
+
+

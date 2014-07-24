@@ -37,9 +37,15 @@ void HandRecThread::TakeBackgroundImage()
     filter.setBackground(frame);
 }
 
+void HandRecThread::OutputRotation()
+{
+    parser.OutputText = "Left";
+}
+
 void HandRecThread::process(){
     cMat filtered, tosend;
     PARSED parsed;
+    int action = 0;
 
     frame = cam.update();
 
@@ -58,10 +64,11 @@ void HandRecThread::process(){
         break;
     case 2:
         //Draw Hand
+        action = recognizer.recognize(parsed);
+        if (action == 1) parser.OutputText = "Left";
+        if (action == 2) parser.OutputText = "Right";
         tosend = frame.clone();
-        parser.drawHand(tosend);
-
-        recognizer.recognize(parsed);
+        parser.drawHand(tosend);       
         break;
     case 1:
         cv::cvtColor(filtered,tosend,CV_GRAY2RGB);

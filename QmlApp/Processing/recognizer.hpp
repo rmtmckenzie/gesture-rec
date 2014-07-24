@@ -20,7 +20,7 @@ class Recognizer : public QObject
     Q_OBJECT
 public:
     explicit Recognizer(QObject *parent = 0);
-    void recognize(PARSED frameValues);
+    int recognize(PARSED frameValues);
 
 private:
     int GetHandPositionMean(int frameNumber, int begin);
@@ -36,6 +36,8 @@ private:
     int InitialYMean = 0;
 
 signals:
+    void _swipeRight();
+    void _swipeLeft();
 
 public slots:
 

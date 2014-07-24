@@ -164,6 +164,15 @@ ApplicationWindow {
                        handrec.stage = 4;
                     }
                 }
+
+//                Text {
+//                    id: RotationText
+//                    text: "Unknown"
+//                    anchors {
+//                        left:parent.left
+//                        right:parent.right
+//                    }
+//                }
             }
         }
     }

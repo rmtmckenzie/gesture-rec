@@ -81,7 +81,7 @@ int Recognizer::RotationSaveFingers()
     return 1;
 }
 
-void Recognizer::recognize(PARSED frameValues)
+int Recognizer::recognize(PARSED frameValues)
 {
     int begin = bufferCurrent - LOOKUPSIZE;
     if (begin < 0) begin+=BUFFERSIZE;
@@ -91,7 +91,7 @@ void Recognizer::recognize(PARSED frameValues)
     buffer[bufferCurrent] = frameValues;
     bufferCurrent = (bufferCurrent + 1) % BUFFERSIZE;
 
-    std::pair<int,int> fingersMean;
+    std::pair<int,int> fMean;
 
     switch (recognizerState)
     {
@@ -100,19 +100,23 @@ void Recognizer::recognize(PARSED frameValues)
         //Find hand orientation
         //if (waitFrame == bufferCurrent) {
 
-            fingersMean = GetFingersMean(bufferCurrent, begin);
+            fMean = GetFingersMean(bufferCurrent, begin);
             //Hand is pointed up
-            if(InitialXMean > fingersMean.first + 50)
+            if(InitialXMean > fMean.first + 50)
             {
 
                 qDebug() << "Up Rotate Left";
+                qDebug() << "Current frame: " << bufferCurrent;
+                return 1;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 //recognizerState = 0;
             }
-            else if(InitialXMean + 50 < fingersMean.first)
+            else if(InitialXMean + 50 < fMean.first)
             {
 
                 qDebug() << "Up Rotate Right";
+                qDebug() << "Current frame: " << bufferCurrent;
+                return 2;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 //recognizerState = 0;
             }
@@ -149,7 +153,7 @@ void Recognizer::recognize(PARSED frameValues)
                 && mean < 250){
             recognizerState = 1;
             waitFrame = (bufferCurrent + 15) % BUFFERSIZE;
-            //PLACEHOLDER: emit state
+
             qDebug("Swipe Left Detected.");
             break;
         }
@@ -159,8 +163,9 @@ void Recognizer::recognize(PARSED frameValues)
                 && mean > 70){
             recognizerState = 2;
             waitFrame = (bufferCurrent + 15) % BUFFERSIZE;
-            //PLACEHOLDER: emit state
+
             qDebug("Swipe Right Detected.");
+
             break;
         }
 
