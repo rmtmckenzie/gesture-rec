@@ -71,8 +71,6 @@ int Recognizer::RotationSaveFingers()
 
         InitialXMean = InitialXMean / buffer[bufferCurrent].fingers.size();
         InitialYMean = InitialYMean / buffer[bufferCurrent].fingers.size();
-
-        InitialThumb = buffer[bufferCurrent].fingers[0].y;
     }
     else
     {
@@ -137,6 +135,19 @@ int Recognizer::recognize(PARSED frameValues)
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
                 recognizerState = 0;
             }
+//            //DOESNT WORK DUE TO ARM BEING DETECTED
+//            else if((InitialYMean + 50) < fMean.second && buffer[bufferCurrent].handCenter.y > buffer[begin].handCenter.y + 70)
+//            {
+//                //PAN DOWN
+//                qDebug() << "PAN DOwN";
+//                recognizerState = 0;
+//            }
+//            else if((InitialYMean + 50) < fMean.second && buffer[bufferCurrent].handCenter.y > buffer[begin].handCenter.y + 50)
+//            {
+//                //PAN UP
+//                qDebug() << "PAN UPPP";
+//                recognizerState = 0;
+//            }
         //}
 
         break;
