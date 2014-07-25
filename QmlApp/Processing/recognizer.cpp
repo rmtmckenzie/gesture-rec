@@ -97,25 +97,26 @@ int Recognizer::recognize(PARSED frameValues)
     {     
     case 3:
 //        if (waitFrame == bufferCurrent) {
+        if (buffer[bufferCurrent].fingers.size()){
             returnValue = 3;
             fMean = GetFingersMean(bufferCurrent, begin);
 
             //ROTATION
-            if(InitialXMean > (fMean.first + 50) && buffer[bufferCurrent].handCenter.x < buffer[begin].handCenter.x + 20
-                    && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 20)
+            if(InitialXMean > (fMean.first + 50) && buffer[bufferCurrent].handCenter.x < buffer[begin].handCenter.x + 30
+                    && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 30)
             {
                 //ROTATE LEFT
                 emit _rotateLeft();
                 returnValue = 4;
-                recognizerState = 0;
+//                recognizerState = 0;
             }
-            else if((InitialXMean + 50) < fMean.first && buffer[bufferCurrent].handCenter.x < buffer[begin].handCenter.x + 20
-                    && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 20)
+            else if((InitialXMean + 50) < fMean.first && buffer[bufferCurrent].handCenter.x < buffer[begin].handCenter.x + 30
+                    && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x - 30)
             {
                 //ROTATE RIGHT
                 emit _rotateRight();
                 returnValue = 5;
-                recognizerState = 0;
+                //recognizerState = 0;
             }
 
             //PAN
@@ -125,7 +126,7 @@ int Recognizer::recognize(PARSED frameValues)
                 emit _panLeft();
                 returnValue = 4;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                recognizerState = 0;
+//                recognizerState = 0;
             }
             else if((InitialXMean + 70) < fMean.first && buffer[bufferCurrent].handCenter.x > buffer[begin].handCenter.x + 70)
             {
@@ -133,7 +134,7 @@ int Recognizer::recognize(PARSED frameValues)
                 emit _panRight();
                 returnValue = 5;
                 //waitFrame = (bufferCurrent + 5) %BUFFERSIZE;
-                recognizerState = 0;
+//                recognizerState = 0;
             }
 //            //DOESNT WORK DUE TO ARM BEING DETECTED
 //            else if((InitialYMean + 50) < fMean.second && buffer[bufferCurrent].handCenter.y > buffer[begin].handCenter.y + 70)
@@ -148,7 +149,9 @@ int Recognizer::recognize(PARSED frameValues)
 //                emit _panUp();
 //                recognizerState = 0;
 //            }
-        //}
+        } else {
+            recognizerState = 0;
+        }
 
         break;
     case 2:
@@ -158,7 +161,7 @@ int Recognizer::recognize(PARSED frameValues)
         if (buffer[begin].handCenter.x > 120 && buffer[begin].handCenter.x < 200
                 && mean < 180 && mean > 140){
 
-            waitFrame = (bufferCurrent + 1) % BUFFERSIZE;
+            waitFrame = (bufferCurrent + 5) % BUFFERSIZE;
             if(RotationSaveFingers()) recognizerState = 3;
         }
         break;
@@ -170,7 +173,7 @@ int Recognizer::recognize(PARSED frameValues)
         if (buffer[begin].handCenter.x > 120 && buffer[begin].handCenter.x < 200
                 && mean < 180 && mean > 140){
 
-            waitFrame = (bufferCurrent + 1) % BUFFERSIZE;
+            waitFrame = (bufferCurrent + 5) % BUFFERSIZE;
             if(RotationSaveFingers()) recognizerState = 3;
         }
 
@@ -198,7 +201,7 @@ int Recognizer::recognize(PARSED frameValues)
         //ROTATION
         if (buffer[begin].handCenter.x > 120 && buffer[begin].handCenter.x < 200
                 && mean < 180 && mean > 140){
-            waitFrame = (bufferCurrent + 1) % BUFFERSIZE;
+            waitFrame = (bufferCurrent + 5) % BUFFERSIZE;
 
             if(RotationSaveFingers()) recognizerState = 3;
         }
