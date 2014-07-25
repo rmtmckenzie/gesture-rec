@@ -31,15 +31,15 @@ win32 | win64 {
 
 } else {
 
-    CONFIG += link_pkgconfig
-    PKGCONFIG += opencv
-#        opencv_imgproc opencv_video opencv_highgui
+#    CONFIG += link_pkgconfig
+#    PKGCONFIG += opencv
+#    PKGCONFIG += opencv_imgproc opencv_video opencv_highgui
 
-#    LIBS += \
-#        -lopencv_core \
-#        -lopencv_imgproc \
-#        -lopencv_video \
-#        -lopencv_highgui \
+    LIBS += \
+        -lopencv_core \
+        -lopencv_imgproc \
+        -lopencv_video \
+        -lopencv_highgui \
 
 }
 
