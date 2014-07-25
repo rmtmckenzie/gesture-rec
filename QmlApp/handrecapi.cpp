@@ -127,26 +127,31 @@ void HandRecAPI::swipeRightDetected()
 
 void HandRecAPI::swipeLeftDetected()
 {
+    qDebug("Swipe Left Signal Sent");
     emit swipeLeft();
 }
 
 void HandRecAPI::panRightDetected()
 {
+    qDebug("Pan Right Signal Sent");
     emit panRight();
 }
 
 void HandRecAPI::panLeftDetected()
 {
+    qDebug("Pan Left Signal Sent");
     emit panLeft();
 }
 
 void HandRecAPI::rotateRightDetected()
 {
+    qDebug("Rotate Right Signal Sent");
     emit rotateRight();
 }
 
 void HandRecAPI::rotateLeftDetected()
 {
+    qDebug("Rotate Left Signal Sent");
     emit rotateLeft();
 }
 
