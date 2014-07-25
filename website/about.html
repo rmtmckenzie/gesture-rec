@@ -153,9 +153,9 @@
                     <div style="margin-left: 20px; margin-right: 20px;">
                         <h2 style="margin-bottom: 0px; font-weight: 700; margin-bottom: 10px;">Graphics Engine</h2>
                         <ul style="font-weight: 200; font-size: 19px; color: #aaa; list-style-type: circle;">
-                            <li>Skin Color Filtering: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</li>
-                            <li>Shape Recognition: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</li>
-                            <li>Background Subtraction: blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah</li>
+                            <li>Skin Colour Filtering: Filtering is done by compiling a range of colours present in the hand of the operator</li>
+                            <li>Shape Recognition: Once the skin colour has been detected, the shape of hand can be recognized using fingerpoints and contours</li>
+                            <li>Background Subtraction: By taking a static background image, background can be subtracted out, and new objects detected more easily</li>
                         </ul>
                     </div>
                 </div>
@@ -169,11 +169,65 @@
         <section>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-md-8" style="border: 1px solid black; height: 300px;"> 
-                    responsiveslides.js: three images 1) signals/slots API, 2) Sequence diagram of graphics computations, 3) UML class diagram of our code
+					<div id="carousel-open-source" class="carousel slide" data-ride="carousel">
+                      <!-- Indicators -->
+                      <ol class="carousel-indicators">
+                        <li data-target="#carousel-open-source" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-open-source" data-slide-to="1"></li>
+                        <li data-target="#carousel-open-source" data-slide-to="2"></li>
+                        <li data-target="#carousel-open-source" data-slide-to="3"></li>
+                        <li data-target="#carousel-open-source" data-slide-to="4"></li>
+                      </ol>
+
+                      <!-- Wrapper for slides -->
+                      <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="resources/images/Sequence2.png" alt="">
+                            <div class="carousel-caption">
+                                <p>How it Works</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="resources/images/Swiping.png" alt="">
+                            <div class="carousel-caption">
+                                <p>Swiping</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="resources/images/Panning.png" alt="">
+                            <div class="carousel-caption">
+                                <p>Panning</p>
+                            </div>
+                        </div>
+						
+                        <div class="item">
+                            <img src="resources/images/Rotating.png" alt="">
+                            <div class="carousel-caption">
+                                <p>Rotating</p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <img src="resources/images/Zooming.png" alt="">
+                            <div class="carousel-caption">
+                                <p>Zooming</p>
+                            </div>
+                        </div>
+                      </div>
+
+                      <!-- Controls -->
+                      <a class="left carousel-control" href="#carousel-open-source" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                      </a>
+                      <a class="right carousel-control" href="#carousel-open-source" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                      </a>
+                    </div>
                 </div>
+				
                 <div class="col-md-4"> 
                     <h2 style="margin-bottom: 0px; font-weight: 700; margin-bottom: 10px;">Open Source API</h2>
-                    <p style="font-weight: 200; font-size: 19px; color: #aaa;">IDK YET</p>
+                    <p style="font-weight: 200; font-size: 19px; color: #aaa;">An API will be available, providing users of the system with events when gestures are detected. The user will not need to know the implementation of the gesture detection system</p>
+                </div>
                 </div>
                 
             </div>
