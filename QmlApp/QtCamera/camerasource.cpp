@@ -13,7 +13,6 @@ void CameraSource::init(QByteArray cam){
     if(cam.isEmpty()){
         //find the camera
         cam = findCamera();
-
     }
 
     setCamera(cam);

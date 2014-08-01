@@ -63,6 +63,15 @@ void HandRecAPI::setStage(unsigned int s)
     }
 }
 
+void HandRecAPI::setBlur(unsigned int arg)
+{
+    if (m_blur != arg) {
+        m_blur = arg;
+        priv.setBlur(arg);
+        emit blurChanged(arg);
+    }
+}
+
 //void HandRecAPI::setExposure(float arg)
 //{
 //    if (m_exposure != arg) {

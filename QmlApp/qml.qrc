@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/GestureCamera/InterfaceElements/GreenButton.qml</file>
+        <file>qml/GestureCamera/InterfaceElements/YellowButton.qml</file>
+        <file>qml/GestureCamera/main.qml</file>
+    </qresource>
+</RCC>

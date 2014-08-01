@@ -42,6 +42,8 @@ public slots:
 
     void changeCam(unsigned int c);
 
+    void blur(unsigned int i);
+
 public:
     //todo make into enum
     int stage();

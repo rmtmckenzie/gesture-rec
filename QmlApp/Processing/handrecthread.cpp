@@ -2,6 +2,8 @@
 #include <QApplication>
 #include "opencvvideobuffer.hpp"
 
+
+
 #include "../handrecapi.hpp"
 
 #include <QDebug>
@@ -21,10 +23,15 @@ HandRecThread::HandRecThread(QObject* parent):
 void HandRecThread::run()
 {
     qDebug() << "Hand Recognition Started!";
+    surf = new VideoSurface(this);
+    source = new CameraSource(surf,this);
 
-    cam.init();
+//    cam.init();
+    source->init();
+    connect(surf,&VideoSurface::frameReceived,this,&HandRecThread::frameReceived);
+    source->start();
 
-    startTimer(0);
+//    startTimer(0);
 }
 
 void HandRecThread::timerEvent(QTimerEvent *)
@@ -37,13 +44,23 @@ void HandRecThread::TakeBackgroundImage()
     filter.setBackground(frame);
 }
 
+void HandRecThread::frameReceived(QVideoFrame inframe)
+{
+    inframe.map(QAbstractVideoBuffer::ReadOnly);
+    qDebug() << inframe.pixelFormat();
+    frame = cMat(inframe.width(),inframe.height(),CV_8UC3,CV_8UC4).clone();
+    inframe.unmap();
+    process();
+}
+
 void HandRecThread::process(){
     cMat filtered, tosend;
     PARSED parsed;
     int action = 0;
 
-    frame = cam.update();
+//    frame = cam.update();
 
+    qDebug() << "Process";
     filtered = filter.filter(frame);
 
     parsed = parser.parse(filtered);

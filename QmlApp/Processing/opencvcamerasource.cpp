@@ -17,7 +17,7 @@ void OpenCVCameraSource::init(){
     if(!vidcap.isOpened()){
         qDebug() << "Camera not found, defaulting to 0.";
     }
-    vidcap.open(camNum);
+    vidcap.open(CV_CAP_ANDROID + camNum);
 
     vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
     vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);

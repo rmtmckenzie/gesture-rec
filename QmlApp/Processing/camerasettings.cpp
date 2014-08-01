@@ -36,18 +36,18 @@ CameraSettings::CameraSettings(OpenCVCameraSource* s, Filter *f, Parser *p,
 
         QTextStream(&st) >> h >> l >> s;
 
-        _filter->lh = h;
-        _filter->ll = l;
-        _filter->ls = s;
+        _filter->l1 = h;
+        _filter->l2 = l;
+        _filter->l3 = s;
 
         st = o["highColor"].toString();
         QTextStream(&st) >> h >> l >> s;
 
-        _filter->hh = h;
-        _filter->hl = l;
-        _filter->hs = s;
+        _filter->h1 = h;
+        _filter->h2 = l;
+        _filter->h3 = s;
 
-        _filter->updateScalars();
+        _filter->updateColors();
         _filter->printColors();
     }
 
@@ -64,13 +64,13 @@ CameraSettings::~CameraSettings()
     _filter->printColors();
 
     o.insert("lowColor",QJsonValue(format.arg(
-                                        QString::number((uint)_filter->lh),
-                                        QString::number((uint)_filter->ll),
-                                        QString::number((uint)_filter->ls))));
+                                        QString::number((uint)_filter->l1),
+                                        QString::number((uint)_filter->l2),
+                                        QString::number((uint)_filter->l3))));
     o.insert("highColor",QJsonValue(format.arg(
-                                        QString::number((uint)_filter->hh),
-                                        QString::number((uint)_filter->hl),
-                                        QString::number((uint)_filter->hs))));
+                                        QString::number((uint)_filter->h1),
+                                        QString::number((uint)_filter->h2),
+                                        QString::number((uint)_filter->h3))));
 
     settings.setObject(o);
 }
@@ -162,6 +162,11 @@ void CameraSettings::frameStage(int s)
 void CameraSettings::changeCam(unsigned int c)
 {
     _camSource->switchCamera(c);
+}
+
+void CameraSettings::blur(unsigned int i)
+{
+    _filter->blur = i;
 }
 
 int CameraSettings::stage()

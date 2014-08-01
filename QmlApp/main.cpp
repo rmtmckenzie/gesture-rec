@@ -1,25 +1,21 @@
-#include "qtquick2controlsapplicationviewer.h"
-#include <QtQml>
+#include <QApplication>
+#include <QQmlApplicationEngine>
 #include "cameraview.hpp"
 #include "handrecapi.hpp"
 #include <QDebug>
 
 #include <QRgb>
 
-
 int main(int argc, char *argv[])
 {
-    qDebug() << "Starting.";
-    Application app(argc, argv);
+    QApplication app(argc, argv);
 
     qRegisterMetaType<QRgb>("QRgb");
-
-    QtQuick2ControlsApplicationViewer viewer;
     qmlRegisterType<CameraView>("Motion.View", 1, 0, "CameraView");
     qmlRegisterType<HandRecAPI>("Motion.HandRec",1,0, "HandRec");
 
-    viewer.setMainQmlFile(QStringLiteral("qml/GestureCamera/main.qml"));
-    viewer.show();
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:///qml/GestureCamera/main.qml")));
 
     return app.exec();
 }
