@@ -20,6 +20,7 @@ public:
     Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(unsigned int camNumber READ camNumber WRITE setCamNumber NOTIFY camNumberChanged)
     Q_PROPERTY(unsigned int stage READ stage WRITE setStage NOTIFY stageChanged)
+    Q_PROPERTY(unsigned int blur READ blur WRITE setBlur NOTIFY blurChanged)
 //    Q_PROPERTY(float exposure READ exposure WRITE setExposure NOTIFY exposureChanged)
 
     Q_PROPERTY(QColor lowColor READ lowColor NOTIFY lowColorChanged)
@@ -77,11 +78,18 @@ public:
         QColor highColor();
         float exposure() const;
 
+        unsigned int blur() const
+        {
+            return m_blur;
+        }
+
 public slots:
         void setRunning(bool r);
         void setCamNumber(unsigned int n);
         void setStage(unsigned int s);
 //        void setExposure(float arg);
+
+        void setBlur(unsigned int arg);
 
 signals:
         void runningChanged(bool r);
@@ -91,6 +99,8 @@ signals:
         void highColorChanged(QColor c);
         void exposureChanged(float arg);
 
+        void blurChanged(unsigned int arg);
+
 private:
         bool m_running;
         unsigned int m_camNum;
@@ -98,6 +108,7 @@ private:
         QColor m_lowColor;
         QColor m_highColor;
         float m_exposure;
+        unsigned int m_blur;
 };
 
 #endif // HANDRECAPI_HPP

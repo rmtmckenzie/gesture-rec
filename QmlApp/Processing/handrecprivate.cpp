@@ -30,7 +30,8 @@ void HandRecPrivate::setupConnections()
     connect(this, &HandRecPrivate::_resetHandColors, s, &CameraSettings::resetHandColors);
     connect(this, &HandRecPrivate::_addHandColor, s, &CameraSettings::addHandColor);
     connect(this, &HandRecPrivate::_setStage, s, &CameraSettings::frameStage);
-    connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage,Qt::QueuedConnection);
+    connect(this, &HandRecPrivate::_takeBackgroundImage, handrec, &HandRecThread::TakeBackgroundImage);
+    connect(this, &HandRecPrivate::_setBlur, s, &CameraSettings::blur);
 
     connect(&handrec->recognizer, &Recognizer::_swipeRight, api, &HandRecAPI::swipeRightDetected);
     connect(&handrec->recognizer, &Recognizer::_swipeLeft, api, &HandRecAPI::swipeLeftDetected);
@@ -38,6 +39,9 @@ void HandRecPrivate::setupConnections()
     connect(&handrec->recognizer, &Recognizer::_panLeft, api, &HandRecAPI::panLeftDetected);
     connect(&handrec->recognizer, &Recognizer::_rotateRight, api, &HandRecAPI::rotateRightDetected);
     connect(&handrec->recognizer, &Recognizer::_rotateLeft, api, &HandRecAPI::rotateLeftDetected);
+
+    connect(&handrec->filter, &Filter::highColorChanged, this, &HandRecPrivate::highColorChanged);
+    connect(&handrec->filter, &Filter::lowColorChanged, this, &HandRecPrivate::lowColorChanged);
 }
 
 void HandRecPrivate::resetHandColors()
@@ -65,7 +69,22 @@ void HandRecPrivate::setExposure(double a, double e)
     emit _setExposure(a,e);
 }
 
+void HandRecPrivate::setBlur(unsigned int b)
+{
+    emit _setBlur(b);
+}
+
 void HandRecPrivate::TakeBackgroundImage()
 {
     emit _takeBackgroundImage();
+}
+
+void HandRecPrivate::lowColorChanged(QRgb c)
+{
+    api->setHighColor(QColor(c));
+}
+
+void HandRecPrivate::highColorChanged(QRgb c)
+{
+    api->setLowColor(QColor(c));
 }

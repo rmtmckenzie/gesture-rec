@@ -2,7 +2,12 @@
 #include <QDebug>
 
 Recognizer::Recognizer(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    bufferCurrent(0),
+    recognizerState(0),
+    waitFrame(0),
+    InitialXMean(0),
+    InitialYMean(0)
 {
 }
 

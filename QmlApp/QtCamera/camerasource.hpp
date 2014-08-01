@@ -17,13 +17,14 @@ public:
 
     void start();
 
-
     enum STATUS{
         STATUS_UNINITIALIZED,
         STATUS_RUNNING,
         STATUS_READY,
         STATUS_ERROR
     };
+
+    VideoSurface* getSurface(){return surface;}
 
     void init(QByteArray cam = "");
 

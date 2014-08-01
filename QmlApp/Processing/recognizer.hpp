@@ -28,12 +28,12 @@ private:
     int RotationSaveFingers();
 
     PARSED buffer[BUFFERSIZE];
-    int bufferCurrent = 0;
+    int bufferCurrent;
 
-    int recognizerState = 0;
-    int waitFrame = 0;
-    int InitialXMean = 0;
-    int InitialYMean = 0;
+    int recognizerState;
+    int waitFrame;
+    int InitialXMean;
+    int InitialYMean;
 
 signals:
     void _swipeRight();

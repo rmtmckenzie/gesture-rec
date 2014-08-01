@@ -23,9 +23,15 @@ public:
     void setStage(unsigned int s);
     void setExposure(double a, double e);
 
+    void setBlur(unsigned int b);
+
     void TakeBackgroundImage();
     void ReturnBackgroundImage();
     void OutputRotation();
+
+public slots:
+    void lowColorChanged(QRgb c);
+    void highColorChanged(QRgb c);
 
 private:
     QThread runnerThread;
@@ -41,6 +47,7 @@ signals:
     void _setStage(unsigned int s);
     void _setExposure(double a, double e);
     void _takeBackgroundImage();
+    void _setBlur(unsigned int b);
 
 public slots:
 

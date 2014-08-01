@@ -22,20 +22,26 @@ public:
     cMat getBackground();
     cMat getBackDiff(const cMat inmat);
 
+    void edgeDetect(const cMat inmat);
+
     void printColors();
 
     cMat sharpen(const cMat inmat);
 private:
-    unsigned char lh,ll,ls, hh,hl,hs;
+    int blur;
+
+    unsigned char l1,l2,l3, h1,h2,h3;
     cColor lowColor;
     cColor highColor;
 
     cMat backgroundImage;
     cMat backgroundFiltered;
 
-    void updateScalars();
+    void updateColors();
 
 signals:
+    void lowColorChanged(QRgb c);
+    void highColorChanged(QRgb c);
 
 public slots:
 

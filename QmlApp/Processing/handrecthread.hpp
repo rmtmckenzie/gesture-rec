@@ -9,6 +9,7 @@
 #include "filter.hpp"
 #include "parser.hpp"
 #include "recognizer.hpp"
+#include "../QtCamera/camerasource.hpp"
 
 class HandRecAPI;
 
@@ -31,6 +32,8 @@ public:
     void TakeBackgroundImage();
 
 private:
+    VideoSurface* surf;
+    CameraSource* source;
     OpenCVCameraSource cam;
     Filter filter;
     Parser parser;
@@ -41,6 +44,8 @@ private:
     cMat frame;
 
     bool keepRunning;
+
+    void frameReceived(QVideoFrame frame);
 
     void process();
 signals:
