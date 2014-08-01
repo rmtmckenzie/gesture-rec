@@ -5,7 +5,7 @@
 
 #include <opencv2/video/video.hpp>
 
-#define HLS
+//#define HLS
 
 #define filteramount 20
 
@@ -175,7 +175,7 @@ void Filter::updateColors()
     hls2rgb(h1,h2,h3,&r,&g,&b);
     emit highColorChanged(QColor(r,g,b).rgb());
 #else
-    emit lowColorChanged(QColor(l1,l2,l3));
+    emit lowColorChanged(QColor(l1,l2,l3).rgb());
     emit highColorChanged(QColor(h1,h2,h3).rgb());
 #endif
 }

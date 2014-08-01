@@ -13,11 +13,12 @@ OpenCVCameraSource::OpenCVCameraSource(QObject *parent) :
 }
 
 void OpenCVCameraSource::init(){
-    vidcap.open(1);
-    if(!vidcap.isOpened()){
-        qDebug() << "Camera not found, defaulting to 0.";
-    }
+
+#ifdef __ANDROID_API__
     vidcap.open(CV_CAP_ANDROID + camNum);
+#else
+    vidcap.open(camNum);
+#endif
 
     vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
     vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
@@ -34,8 +35,18 @@ void OpenCVCameraSource::switchCamera(int num)
 {
     if(num != camNum){
         qDebug() << "Switching camera to " << num;
-        vidcap.open(num);
         camNum = num;
+
+#ifdef __ANDROID_API__
+        vidcap.open(CV_CAP_ANDROID + camNum);
+#else
+        vidcap.open(camNum);
+#endif
+
+        vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
+        vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+        qDebug() << "Height" << vidcap.get(CV_CAP_PROP_FRAME_HEIGHT);
+        qDebug() << "Width" << vidcap.get(CV_CAP_PROP_FRAME_WIDTH);
     }
 }
 

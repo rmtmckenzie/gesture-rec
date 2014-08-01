@@ -316,7 +316,7 @@ void Parser::drawHand(cMat c)
     cv::line(c,handCenter,center,cColor(0,0,255));
 
     //Display which gestures has been detected
-//    cPoint TopLeft = {10,10};
+//    cPoint TopLeft(10,10);
 //    cv::putText(c, OutputText, TopLeft, cv::FONT_HERSHEY_PLAIN, 1.2f, cv::Scalar(255,0,0),2);
 }
 
