@@ -29,12 +29,14 @@ public:
     void drawContour(cMat c);
     void drawHand(cMat c);
 
+    std::string OutputText;
 private:
     PointArray contour;
     DefectArray defects;
     PointArray fingers;
     PointArray inners;
     cRect bounds;
+
 
 signals:
 public slots:

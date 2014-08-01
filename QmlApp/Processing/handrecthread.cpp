@@ -23,15 +23,15 @@ HandRecThread::HandRecThread(QObject* parent):
 void HandRecThread::run()
 {
     qDebug() << "Hand Recognition Started!";
-    surf = new VideoSurface(this);
-    source = new CameraSource(surf,this);
+//    surf = new VideoSurface(this);
+//    source = new CameraSource(surf,this);
 
-//    cam.init();
-    source->init();
-    connect(surf,&VideoSurface::frameReceived,this,&HandRecThread::frameReceived);
-    source->start();
+    cam.init();
+//    source->init();
+//    connect(surf,&VideoSurface::frameReceived,this,&HandRecThread::frameReceived);
+//    source->start();
 
-//    startTimer(0);
+    startTimer(0);
 }
 
 void HandRecThread::timerEvent(QTimerEvent *)
@@ -58,9 +58,9 @@ void HandRecThread::process(){
     PARSED parsed;
     int action = 0;
 
-//    frame = cam.update();
+    frame = cam.update();
 
-    qDebug() << "Process";
+//    qDebug() << "Process";
     filtered = filter.filter(frame);
 
     parsed = parser.parse(filtered);
