@@ -21,7 +21,7 @@ ApplicationWindow {
     //    height:240
     HandRec {
         id: handrec
-        camNumber: 1
+        camNumber: 0
         running: true
         blur: blurbox.value
     }

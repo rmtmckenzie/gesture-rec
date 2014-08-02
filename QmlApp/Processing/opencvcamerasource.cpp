@@ -20,8 +20,8 @@ void OpenCVCameraSource::init(){
     vidcap.open(camNum);
 #endif
 
-    vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 320);
-    vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 240);
+    vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
+    vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
     qDebug() << "Height" << vidcap.get(CV_CAP_PROP_FRAME_HEIGHT);
     qDebug() << "Width" << vidcap.get(CV_CAP_PROP_FRAME_WIDTH);
 }
@@ -43,8 +43,8 @@ void OpenCVCameraSource::switchCamera(int num)
         vidcap.open(camNum);
 #endif
 
-        vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
         vidcap.set(CV_CAP_PROP_FRAME_HEIGHT, 480);
+        vidcap.set(CV_CAP_PROP_FRAME_WIDTH, 640);
         qDebug() << "Height" << vidcap.get(CV_CAP_PROP_FRAME_HEIGHT);
         qDebug() << "Width" << vidcap.get(CV_CAP_PROP_FRAME_WIDTH);
     }
