@@ -16,12 +16,15 @@ win32 | win64 {
     INCLUDEPATH += $$(OPENCV_DIR)/../../include/
     LIBS += -L$$(OPENCV_DIR)/lib \
 
-    LIBS += \
-        -lopencv_core249d \
-        -lopencv_imgproc249d \
-        -lopencv_highgui249d \
+    CONFIG(debug, debug|release) {
+        LIBS += -lopencv_world300d
+    } else {
+        LIBS += -lopencv_world300
+    }
 
-} android {
+} else:android {
+
+    #not currently tested
 
     INCLUDEPATH += $$(OPENCV_DIR)/jni/include
 
@@ -51,19 +54,19 @@ win32 | win64 {
 #        -lopencv_video \
 #        -lopencv_videostab
 
-
-
 } else {
 
 #    CONFIG += link_pkgconfig
 #    PKGCONFIG += opencv
 #    PKGCONFIG += opencv_imgproc opencv_video opencv_highgui
 
+    #not currently tested.
+
     LIBS += \
         -lopencv_core \
         -lopencv_imgproc \
         -lopencv_video \
-        -lopencv_highgui \
+        -lopencv_highgui
 
 }
 
