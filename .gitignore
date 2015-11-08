@@ -1,2 +1,6 @@
 #ignore build directories.
 build-*/
+
+#ignore user configuration files from QtCreator.
+*.pro.user
+*.autosave
